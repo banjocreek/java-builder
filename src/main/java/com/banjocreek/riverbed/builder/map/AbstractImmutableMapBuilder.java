@@ -20,30 +20,11 @@ package com.banjocreek.riverbed.builder.map;
 import java.util.Collection;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 import com.banjocreek.riverbed.builder.AbstractImmutableBuilder;
 
 public abstract class AbstractImmutableMapBuilder<K extends Enum<K>, V, R, P>
         extends AbstractImmutableBuilder<MapKernel<K, V>, MapDelta<K, V>, R, P> {
-
-    private static <KK extends Enum<KK>, VV, X> Function<MapKernel<KK, VV>, X> adaptConstructor(
-            final Function<Map<KK, VV>, X> constructor) {
-
-        return mk -> constructor.apply(mk.merge());
-
-    }
-
-    private static <KK extends Enum<KK>, VV> Supplier<MapKernel<KK, VV>> initializer(
-            final Class<KK> keyType) {
-        return () -> new MapKernel<>(keyType);
-    }
-
-    private static final <KK extends Enum<KK>, VV> MapKernel<KK, VV> mutate(
-            final MapKernel<KK, VV> t, final MapDelta<KK, VV> u) {
-        u.applyTo(t);
-        return t;
-    }
 
     protected AbstractImmutableMapBuilder(
             final AbstractImmutableMapBuilder<K, V, R, P> previous,
@@ -54,9 +35,9 @@ public abstract class AbstractImmutableMapBuilder<K extends Enum<K>, V, R, P>
     protected AbstractImmutableMapBuilder(final Class<K> keyType,
             final Function<Map<K, V>, P> parentConstructor,
             final Function<Map<K, V>, R> rootConstructor) {
-        super(initializer(keyType), AbstractImmutableMapBuilder::mutate,
-                adaptConstructor(parentConstructor),
-                adaptConstructor(rootConstructor));
+        super(Helper.initializer(keyType), Helper::mutate, Helper
+                .adaptConstructor(parentConstructor), Helper
+                .adaptConstructor(rootConstructor));
     }
 
     /**
