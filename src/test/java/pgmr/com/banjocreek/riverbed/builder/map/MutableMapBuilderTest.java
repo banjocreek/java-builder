@@ -359,17 +359,17 @@ public class MutableMapBuilderTest {
         }
 
         public TestBuilder a(final Object v) {
-            entries(TestKey.A, v);
+            values(TestKey.A, v);
             return this;
         }
 
         public TestBuilder b(final Object v) {
-            entries(TestKey.B, v);
+            values(TestKey.B, v);
             return this;
         }
 
         public TestBuilder c(final Object v) {
-            entries(TestKey.C, v);
+            values(TestKey.C, v);
             return this;
         }
 
@@ -424,12 +424,12 @@ public class MutableMapBuilderTest {
         }
 
         public TestBuilder val(final Map<TestKey, Object> vs) {
-            entries(vs);
+            values(vs);
             return this;
         }
 
         public TestBuilder val(final TestKey k, final Object v) {
-            entries(k, v);
+            values(k, v);
             return this;
         }
     }
