@@ -17,8 +17,27 @@
  */
 package com.banjocreek.riverbed.builder.map;
 
-public interface MapDelta<K, V> {
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
 
-    void applyTo(MapKernel<K, V> kernel);
+final class Helper {
+
+    public static <K, V, X> Function<HashMapKernel<K, V>, X> adaptConstructor(
+            final Function<Map<K, V>, X> constructor) {
+        return mk -> constructor.apply(mk.merge());
+    }
+
+    public static final <K, V> HashMapKernel<K, V> mutate(
+            final HashMapKernel<K, V> t, final MapDelta<K, V> u) {
+        u.applyTo(t);
+        return t;
+    }
+
+    public static void requireKeys(final Set<?> s) {
+        if (s.contains(null)) {
+            throw new NullPointerException("null key is not allowed");
+        }
+    }
 
 }

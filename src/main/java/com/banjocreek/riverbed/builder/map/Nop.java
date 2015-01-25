@@ -17,8 +17,17 @@
  */
 package com.banjocreek.riverbed.builder.map;
 
-public interface MapDelta<K, V> {
+final class Nop<K, V> implements MapDelta<K, V> {
 
-    void applyTo(MapKernel<K, V> kernel);
+    private static final Nop<?, ?> INSTANCE = new Nop<>();
+
+    @SuppressWarnings("unchecked")
+    static <KK, VV> Nop<KK, VV> instance() {
+        return (Nop<KK, VV>) INSTANCE;
+    }
+
+    @Override
+    public void applyTo(final MapKernel<K, V> kernel) {
+    }
 
 }

@@ -30,7 +30,7 @@ import org.junit.Test;
 
 import com.banjocreek.riverbed.builder.enummap.AbstractMutableEnumMapBuilder;
 
-public class MutableMapBuilderTest {
+public class MutableEnumMapBuilderTest {
 
     private TestBuilder empty;
 

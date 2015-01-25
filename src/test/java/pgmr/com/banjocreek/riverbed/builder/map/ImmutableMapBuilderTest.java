@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package pgmr.com.banjocreek.riverbed.builder.enummap;
+package pgmr.com.banjocreek.riverbed.builder.map;
 
 import static org.junit.Assert.*;
 
@@ -28,7 +28,7 @@ import java.util.function.Function;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.banjocreek.riverbed.builder.enummap.AbstractImmutableEnumMapBuilder;
+import com.banjocreek.riverbed.builder.map.AbstractImmutableMapBuilder;
 import com.banjocreek.riverbed.builder.map.MapDelta;
 
 public class ImmutableMapBuilderTest {
@@ -378,10 +378,10 @@ public class ImmutableMapBuilderTest {
 
     static final class TestBuilder
             extends
-            AbstractImmutableEnumMapBuilder<TestKey, Object, Map<String, String>, Map<TestKey, Object>> {
+            AbstractImmutableMapBuilder<TestKey, Object, Map<String, String>, Map<TestKey, Object>> {
 
         public TestBuilder() {
-            super(TestKey.class, Function.identity(), m -> {
+            super(Function.identity(), m -> {
                 final HashMap<String, String> rval = new HashMap<>();
                 m.forEach((k, v) -> {
                     rval.put(String.valueOf(k), String.valueOf(v));

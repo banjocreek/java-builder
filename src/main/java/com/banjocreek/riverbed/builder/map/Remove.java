@@ -17,8 +17,29 @@
  */
 package com.banjocreek.riverbed.builder.map;
 
-public interface MapDelta<K, V> {
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
-    void applyTo(MapKernel<K, V> kernel);
+final class Remove<K, V> implements MapDelta<K, V> {
+
+    private final Set<K> keys;
+
+    public Remove(final Collection<K> keys) {
+        final Set<K> temp = new HashSet<>(keys);
+        Helper.requireKeys(temp);
+        this.keys = temp;
+    }
+
+    public Remove(final K key) {
+        this.keys = Collections.singleton(Objects.requireNonNull(key));
+    }
+
+    @Override
+    public void applyTo(final MapKernel<K, V> kernel) {
+        kernel.remove(this.keys);
+    }
 
 }
