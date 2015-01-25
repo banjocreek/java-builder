@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package pgmr.com.banjocreek.riverbed.builder.map;
+package pgmr.com.banjocreek.riverbed.builder.enummap;
 
 import static org.junit.Assert.*;
 
@@ -28,10 +28,9 @@ import java.util.function.Function;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.banjocreek.riverbed.builder.map.AbstractImmutableMapBuilder;
-import com.banjocreek.riverbed.builder.map.MapDelta;
+import com.banjocreek.riverbed.builder.enummap.AbstractMutableEnumMapBuilder;
 
-public class ImmutableMapBuilderTest {
+public class MutableEnumMapBuilderTest {
 
     private TestBuilder empty;
 
@@ -51,7 +50,7 @@ public class ImmutableMapBuilderTest {
         /*
          * when build is invoked
          */
-        final Map<TestKey, Object> built = b.done();
+        final Map<TestKey, Object> built = b.merge();
 
         /*
          * it creates a corresponding object
@@ -59,30 +58,6 @@ public class ImmutableMapBuilderTest {
         final HashMap<TestKey, Object> expected = new HashMap<>();
         expected.put(TestKey.A, "A");
         expected.put(TestKey.B, "B");
-
-        assertEquals(expected, built);
-
-    }
-
-    @Test
-    public void testConstructRoot() {
-
-        /*
-         * given a builder with entries
-         */
-        final TestBuilder b = this.empty.a("A").b("B");
-
-        /*
-         * when build is invoked
-         */
-        final Map<String, String> built = b.build();
-
-        /*
-         * it creates a corresponding object
-         */
-        final HashMap<String, String> expected = new HashMap<>();
-        expected.put("A", "A");
-        expected.put("B", "B");
 
         assertEquals(expected, built);
 
@@ -99,7 +74,7 @@ public class ImmutableMapBuilderTest {
         /*
          * when an object is built
          */
-        final Map<TestKey, Object> actual = b.done();
+        final Map<TestKey, Object> actual = b.merge();
 
         /*
          * the default does not override the remove
@@ -122,7 +97,7 @@ public class ImmutableMapBuilderTest {
         /*
          * when an object is built
          */
-        final Map<TestKey, Object> actual = b.done();
+        final Map<TestKey, Object> actual = b.merge();
 
         /*
          * the default does not override the valuet
@@ -231,7 +206,7 @@ public class ImmutableMapBuilderTest {
         /*
          * when an object is built
          */
-        final Map<TestKey, Object> actual = b.done();
+        final Map<TestKey, Object> actual = b.merge();
 
         /*
          * the remove wins
@@ -255,7 +230,7 @@ public class ImmutableMapBuilderTest {
         /*
          * when an object is built
          */
-        final Map<TestKey, Object> actual = b.done();
+        final Map<TestKey, Object> actual = b.merge();
 
         /*
          * the remove wins
@@ -278,7 +253,7 @@ public class ImmutableMapBuilderTest {
         /*
          * when an object is built
          */
-        final Map<TestKey, Object> actual = b.done();
+        final Map<TestKey, Object> actual = b.merge();
 
         /*
          * it creates the union
@@ -341,7 +316,7 @@ public class ImmutableMapBuilderTest {
         /*
          * when an object is built
          */
-        final Map<TestKey, Object> actual = b.done();
+        final Map<TestKey, Object> actual = b.merge();
 
         /*
          * the remove overrides the default
@@ -364,7 +339,7 @@ public class ImmutableMapBuilderTest {
         /*
          * when an object is built
          */
-        final Map<TestKey, Object> actual = b.done();
+        final Map<TestKey, Object> actual = b.merge();
 
         /*
          * the entry overrides the default
@@ -378,83 +353,86 @@ public class ImmutableMapBuilderTest {
 
     static final class TestBuilder
             extends
-            AbstractImmutableMapBuilder<TestKey, Object, Map<String, String>, Map<TestKey, Object>> {
+            AbstractMutableEnumMapBuilder<TestKey, Object, Map<TestKey, Object>> {
 
         public TestBuilder() {
-            super(Function.identity(), m -> {
-                final HashMap<String, String> rval = new HashMap<>();
-                m.forEach((k, v) -> {
-                    rval.put(String.valueOf(k), String.valueOf(v));
-                });
-                return rval;
-            });
-        }
-
-        protected TestBuilder(final TestBuilder previous,
-                final MapDelta<TestKey, Object> delta) {
-            super(previous, delta);
+            super(TestKey.class, Function.identity());
         }
 
         public TestBuilder a(final Object v) {
-            return new TestBuilder(this, entries(TestKey.A, v));
+            entries(TestKey.A, v);
+            return this;
         }
 
         public TestBuilder b(final Object v) {
-            return new TestBuilder(this, entries(TestKey.B, v));
+            entries(TestKey.B, v);
+            return this;
         }
 
         public TestBuilder c(final Object v) {
-            return new TestBuilder(this, entries(TestKey.C, v));
+            entries(TestKey.C, v);
+            return this;
         }
 
         public TestBuilder def(final Map<TestKey, Object> vs) {
-            return new TestBuilder(this, defaults(vs));
+            defaults(vs);
+            return this;
         }
 
         public TestBuilder def(final TestKey k, final Object v) {
-            return new TestBuilder(this, defaults(k, v));
+            defaults(k, v);
+            return this;
         }
 
         public TestBuilder defa(final Object v) {
-            return new TestBuilder(this, defaults(TestKey.A, v));
+            defaults(TestKey.A, v);
+            return this;
         }
 
         public TestBuilder defb(final Object v) {
-            return new TestBuilder(this, defaults(TestKey.B, v));
+            defaults(TestKey.B, v);
+            return this;
         }
 
         public TestBuilder defc(final Object v) {
-            return new TestBuilder(this, defaults(TestKey.C, v));
+            defaults(TestKey.C, v);
+            return this;
         }
 
         public TestBuilder no(final Collection<TestKey> ks) {
-            return new TestBuilder(this, remove(ks));
+            remove(ks);
+            return this;
         }
 
         public TestBuilder no(final TestKey k) {
-            return new TestBuilder(this, remove(k));
+            remove(k);
+            return this;
         }
 
         public TestBuilder noa() {
-            return new TestBuilder(this, remove(TestKey.A));
+            remove(TestKey.A);
+            return this;
         }
 
         public TestBuilder nob() {
-            return new TestBuilder(this, remove(TestKey.B));
+            remove(TestKey.B);
+            return this;
         }
 
         public TestBuilder noc() {
-            return new TestBuilder(this, remove(TestKey.C));
+            remove(TestKey.C);
+            return this;
         }
 
         public TestBuilder val(final Map<TestKey, Object> vs) {
-            return new TestBuilder(this, entries(vs));
+            entries(vs);
+            return this;
         }
 
         public TestBuilder val(final TestKey k, final Object v) {
-            return new TestBuilder(this, entries(k, v));
+            entries(k, v);
+            return this;
         }
-
     }
 
     enum TestKey {

@@ -15,29 +15,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.banjocreek.riverbed.builder.map;
+package com.banjocreek.riverbed.builder.enummap;
 
 import java.util.Map;
-import java.util.Set;
 import java.util.function.Function;
+import java.util.function.Supplier;
+
+import com.banjocreek.riverbed.builder.map.MapDelta;
 
 final class Helper {
 
-    public static <K, V, X> Function<HashMapKernel<K, V>, X> adaptConstructor(
-            final Function<Map<K, V>, X> constructor) {
+    public static <KK extends Enum<KK>, VV, X> Function<EnumMapKernel<KK, VV>, X> adaptConstructor(
+            final Function<Map<KK, VV>, X> constructor) {
+
         return mk -> constructor.apply(mk.merge());
+
     }
 
-    public static final <K, V> HashMapKernel<K, V> mutate(
-            final HashMapKernel<K, V> t, final MapDelta<K, V> u) {
+    public static <KK extends Enum<KK>, VV> Supplier<EnumMapKernel<KK, VV>> initializer(
+            final Class<KK> keyType) {
+        return () -> new EnumMapKernel<>(keyType);
+    }
+
+    public static final <KK extends Enum<KK>, VV> EnumMapKernel<KK, VV> mutate(
+            final EnumMapKernel<KK, VV> t, final MapDelta<KK, VV> u) {
         u.applyTo(t);
         return t;
-    }
-
-    public static void requireKeys(final Set<?> s) {
-        if (s.contains(null)) {
-            throw new NullPointerException("null key is not allowed");
-        }
     }
 
 }

@@ -15,26 +15,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.banjocreek.riverbed.builder.map;
+package com.banjocreek.riverbed.builder.enummap;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Objects;
+import java.util.EnumSet;
 import java.util.Set;
 
-final class Remove<K, V> implements MapDelta<K, V> {
+import com.banjocreek.riverbed.builder.map.MapDelta;
+import com.banjocreek.riverbed.builder.map.MapKernel;
+
+final class Remove<K extends Enum<K>, V> implements MapDelta<K, V> {
 
     private final Set<K> keys;
 
     public Remove(final Collection<K> keys) {
-        final Set<K> temp = new HashSet<>(keys);
-        Helper.requireKeys(temp);
-        this.keys = temp;
+        this.keys = EnumSet.copyOf(keys);
     }
 
     public Remove(final K key) {
-        this.keys = Collections.singleton(Objects.requireNonNull(key));
+        this.keys = EnumSet.of(key);
     }
 
     @Override

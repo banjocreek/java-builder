@@ -355,7 +355,7 @@ public class MutableMapBuilderTest {
             AbstractMutableMapBuilder<TestKey, Object, Map<TestKey, Object>> {
 
         public TestBuilder() {
-            super(TestKey.class, Function.identity());
+            super(Function.identity());
         }
 
         public TestBuilder a(final Object v) {

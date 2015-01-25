@@ -18,36 +18,9 @@
 package com.banjocreek.riverbed.builder.map;
 
 import java.util.Collection;
-import java.util.EnumMap;
-import java.util.EnumSet;
 import java.util.Map;
 
-final class MapKernel<K extends Enum<K>, V> {
-
-    /**
-     * Defaults accumulator. Default entries are added or updated with the
-     * {@link #defaults(Map)} method.
-     */
-    private final EnumMap<K, V> defaults;
-
-    /**
-     * Entry accumulator. Map entries are removed or added by the
-     * {@link #entries(Map)} and {@link #remove(Collection)} operations.
-     */
-    private final EnumMap<K, V> entries;
-
-    /**
-     * All seen keys, i.e. all keys for which default has been overridden. A
-     * seen key comes from a {@link #remove(Collection)} or
-     * {@link #entries(Map)} invocation.
-     */
-    private final EnumSet<K> seen;
-
-    public MapKernel(final Class<K> keyType) {
-        this.defaults = new EnumMap<>(keyType);
-        this.entries = new EnumMap<>(keyType);
-        this.seen = EnumSet.noneOf(keyType);
-    }
+public interface MapKernel<K, V> {
 
     /**
      * <p>
@@ -56,7 +29,7 @@ final class MapKernel<K extends Enum<K>, V> {
      * </p>
      * <p>
      * The order in which this is invoked with respect to
-     * {@link #remove(Collection)} and {@link #entries(Map)} is unimportant.
+     * {@link #remove(Collection)} and {@link #values(Map)} is unimportant.
      * However the order in which this method is invoked with respect to other
      * invocations of {@link #defaults(Map)} is significant. Later invocations
      * override the defaults set in previous invocations.
@@ -64,50 +37,44 @@ final class MapKernel<K extends Enum<K>, V> {
      *
      * @param additional
      */
-    public void defaults(final Map<K, V> additional) {
+    public void defaults(final Map<K, V> additional);
 
-        this.defaults.putAll(additional);
-
-    }
-
-    public void entries(final Map<K, V> additional) {
-
-        this.entries.putAll(additional);
-        this.seen.addAll(additional.keySet());
-
-    }
-
-    public Map<K, V> merge() {
-
-        /*
-         * Start with defaults.
-         */
-        final EnumMap<K, V> rval = new EnumMap<>(this.defaults);
-
-        /*
-         * get rid of everything for which default has been overridden
-         */
-        rval.keySet().removeAll(this.seen);
-
-        /*
-         * apply accumulated entries.
-         */
-        rval.putAll(this.entries);
-
-        return rval;
-    }
+    public Map<K, V> merge();
 
     /**
-     * Remove entries from the resulting map.
+     * <p>
+     * Remove entries from the resulting map. Values with the keys presented
+     * here will not be in the map unless subsequently set with
+     * {@link #values(Map)}. If a removed value is present in an invocation of
+     * {@link #defaults(Map)}, the default has no effect and the result will not
+     * contain a value for the key.
+     * <p>
+     * The order in which this is invoked with respect to {@link #values(Map)}
+     * and other invocations of {@link #remove(Collection)} determines the the
+     * final result with later operations taking precedence. It does not matter
+     * the order this method is invoked with respect to {@link #defaults(Map)}.
+     * </p>
      *
      * @param toRemove
      *            keys of entries to remove.
      */
-    public void remove(final Collection<K> toRemove) {
+    public void remove(final Collection<K> toRemove);
 
-        this.entries.keySet().removeAll(toRemove);
-        this.seen.addAll(toRemove);
-
-    }
+    /**
+     * <p>
+     * Set or update values. Any entries provide here will occur in the
+     * resulting map unless subsequently removed or replaced
+     * </p>
+     * <p>
+     * The order in which this is invoked with respect to
+     * {@link #remove(Collection)} and other invocations of {@link #values(Map)}
+     * determines the the final result with later operations taking precedence.
+     * It does not matter the order this method is invoked with respect to
+     * {@link #defaults(Map)}.
+     * </p>
+     *
+     * @param additional
+     */
+    public void values(final Map<K, V> additional);
 
 }

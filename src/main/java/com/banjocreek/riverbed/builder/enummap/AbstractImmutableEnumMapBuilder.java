@@ -15,27 +15,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.banjocreek.riverbed.builder.map;
+package com.banjocreek.riverbed.builder.enummap;
 
 import java.util.Collection;
 import java.util.Map;
 import java.util.function.Function;
 
 import com.banjocreek.riverbed.builder.AbstractImmutableBuilder;
+import com.banjocreek.riverbed.builder.map.MapDelta;
 
-public abstract class AbstractImmutableMapBuilder<K, V, R, P> extends
-        AbstractImmutableBuilder<HashMapKernel<K, V>, MapDelta<K, V>, R, P> {
+public abstract class AbstractImmutableEnumMapBuilder<K extends Enum<K>, V, R, P>
+        extends
+        AbstractImmutableBuilder<EnumMapKernel<K, V>, MapDelta<K, V>, R, P> {
 
-    protected AbstractImmutableMapBuilder(
-            final AbstractImmutableMapBuilder<K, V, R, P> previous,
+    protected AbstractImmutableEnumMapBuilder(
+            final AbstractImmutableEnumMapBuilder<K, V, R, P> previous,
             final MapDelta<K, V> delta) {
         super(previous, delta);
     }
 
-    protected AbstractImmutableMapBuilder(
+    protected AbstractImmutableEnumMapBuilder(final Class<K> keyType,
             final Function<Map<K, V>, P> parentConstructor,
             final Function<Map<K, V>, R> rootConstructor) {
-        super(HashMapKernel::new, Helper::mutate, Helper
+        super(Helper.initializer(keyType), Helper::mutate, Helper
                 .adaptConstructor(parentConstructor), Helper
                 .adaptConstructor(rootConstructor));
     }

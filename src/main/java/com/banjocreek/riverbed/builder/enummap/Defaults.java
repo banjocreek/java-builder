@@ -15,31 +15,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.banjocreek.riverbed.builder.map;
+package com.banjocreek.riverbed.builder.enummap;
 
-import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.EnumMap;
+import java.util.Map;
 
-final class Remove<K, V> implements MapDelta<K, V> {
+import com.banjocreek.riverbed.builder.map.MapDelta;
+import com.banjocreek.riverbed.builder.map.MapKernel;
 
-    private final Set<K> keys;
+final class Defaults<K extends Enum<K>, V> implements MapDelta<K, V> {
 
-    public Remove(final Collection<K> keys) {
-        final Set<K> temp = new HashSet<>(keys);
-        Helper.requireKeys(temp);
-        this.keys = temp;
+    private final EnumMap<K, V> entries;
+
+    public Defaults(final K k, final V v) {
+        this.entries = new EnumMap<>(Collections.singletonMap(k, v));
     }
 
-    public Remove(final K key) {
-        this.keys = Collections.singleton(Objects.requireNonNull(key));
+    public Defaults(final Map<K, ? extends V> entries) {
+        this.entries = new EnumMap<>(entries);
     }
 
     @Override
     public void applyTo(final MapKernel<K, V> kernel) {
-        kernel.remove(this.keys);
+
+        kernel.defaults(this.entries);
+
     }
 
 }

@@ -18,19 +18,22 @@
 package com.banjocreek.riverbed.builder.map;
 
 import java.util.Collections;
-import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
-final class Defaults<K extends Enum<K>, V> implements MapDelta<K, V> {
+final class Defaults<K, V> implements MapDelta<K, V> {
 
-    private final EnumMap<K, V> entries;
+    private final Map<K, V> entries;
 
     public Defaults(final K k, final V v) {
-        this.entries = new EnumMap<>(Collections.singletonMap(k, v));
+        this.entries = Collections.singletonMap(Objects.requireNonNull(k), v);
     }
 
     public Defaults(final Map<K, ? extends V> entries) {
-        this.entries = new EnumMap<>(entries);
+        final HashMap<K, V> temp = new HashMap<>(entries);
+        Helper.requireKeys(temp.keySet());
+        this.entries = temp;
     }
 
     @Override

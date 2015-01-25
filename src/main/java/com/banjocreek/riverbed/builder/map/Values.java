@@ -17,29 +17,30 @@
  */
 package com.banjocreek.riverbed.builder.map;
 
-import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
-final class Remove<K, V> implements MapDelta<K, V> {
+final class Values<K, V> implements MapDelta<K, V> {
 
-    private final Set<K> keys;
+    private final Map<K, V> entries;
 
-    public Remove(final Collection<K> keys) {
-        final Set<K> temp = new HashSet<>(keys);
-        Helper.requireKeys(temp);
-        this.keys = temp;
+    public Values(final K k, final V v) {
+        this.entries = Collections.singletonMap(Objects.requireNonNull(k), v);
     }
 
-    public Remove(final K key) {
-        this.keys = Collections.singleton(Objects.requireNonNull(key));
+    public Values(final Map<K, ? extends V> entries) {
+        final HashMap<K, V> temp = new HashMap<>(entries);
+        Helper.requireKeys(temp.keySet());
+        this.entries = temp;
     }
 
     @Override
     public void applyTo(final MapKernel<K, V> kernel) {
-        kernel.remove(this.keys);
+
+        kernel.values(this.entries);
+
     }
 
 }
