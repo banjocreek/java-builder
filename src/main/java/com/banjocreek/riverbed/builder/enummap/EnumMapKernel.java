@@ -22,7 +22,9 @@ import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.Map;
 
-final class EnumMapKernel<K extends Enum<K>, V> {
+import com.banjocreek.riverbed.builder.map.MapKernel;
+
+final class EnumMapKernel<K extends Enum<K>, V> implements MapKernel<K, V> {
 
     /**
      * Defaults accumulator. Default entries are added or updated with the
@@ -49,27 +51,14 @@ final class EnumMapKernel<K extends Enum<K>, V> {
         this.seen = EnumSet.noneOf(keyType);
     }
 
-    /**
-     * <p>
-     * Set or update defaults. Any entries provided here will occur in the
-     * resulting map as long as they are not overridden or removed.
-     * </p>
-     * <p>
-     * The order in which this is invoked with respect to
-     * {@link #remove(Collection)} and {@link #entries(Map)} is unimportant.
-     * However the order in which this method is invoked with respect to other
-     * invocations of {@link #defaults(Map)} is significant. Later invocations
-     * override the defaults set in previous invocations.
-     * </p>
-     *
-     * @param additional
-     */
+    @Override
     public void defaults(final Map<K, V> additional) {
 
         this.defaults.putAll(additional);
 
     }
 
+    @Override
     public void entries(final Map<K, V> additional) {
 
         this.entries.putAll(additional);
@@ -77,6 +66,7 @@ final class EnumMapKernel<K extends Enum<K>, V> {
 
     }
 
+    @Override
     public Map<K, V> merge() {
 
         /*
@@ -97,12 +87,7 @@ final class EnumMapKernel<K extends Enum<K>, V> {
         return rval;
     }
 
-    /**
-     * Remove entries from the resulting map.
-     *
-     * @param toRemove
-     *            keys of entries to remove.
-     */
+    @Override
     public void remove(final Collection<K> toRemove) {
 
         this.entries.keySet().removeAll(toRemove);

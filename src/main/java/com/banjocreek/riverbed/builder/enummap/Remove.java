@@ -21,6 +21,9 @@ import java.util.Collection;
 import java.util.EnumSet;
 import java.util.Set;
 
+import com.banjocreek.riverbed.builder.map.MapDelta;
+import com.banjocreek.riverbed.builder.map.MapKernel;
+
 final class Remove<K extends Enum<K>, V> implements MapDelta<K, V> {
 
     private final Set<K> keys;
@@ -34,7 +37,7 @@ final class Remove<K extends Enum<K>, V> implements MapDelta<K, V> {
     }
 
     @Override
-    public void applyTo(final EnumMapKernel<K, V> kernel) {
+    public void applyTo(final MapKernel<K, V> kernel) {
         kernel.remove(this.keys);
     }
 

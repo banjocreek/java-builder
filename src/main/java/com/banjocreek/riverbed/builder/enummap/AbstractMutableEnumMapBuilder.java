@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 import com.banjocreek.riverbed.builder.AbstractMutableBuilder;
+import com.banjocreek.riverbed.builder.map.MapDelta;
 
 public abstract class AbstractMutableEnumMapBuilder<K extends Enum<K>, V, P>
         extends AbstractMutableBuilder<EnumMapKernel<K, V>, MapDelta<K, V>, P> {

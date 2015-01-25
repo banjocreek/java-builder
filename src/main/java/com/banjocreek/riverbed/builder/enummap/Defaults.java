@@ -21,6 +21,9 @@ import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Map;
 
+import com.banjocreek.riverbed.builder.map.MapDelta;
+import com.banjocreek.riverbed.builder.map.MapKernel;
+
 final class Defaults<K extends Enum<K>, V> implements MapDelta<K, V> {
 
     private final EnumMap<K, V> entries;
@@ -34,7 +37,7 @@ final class Defaults<K extends Enum<K>, V> implements MapDelta<K, V> {
     }
 
     @Override
-    public void applyTo(final EnumMapKernel<K, V> kernel) {
+    public void applyTo(final MapKernel<K, V> kernel) {
 
         kernel.defaults(this.entries);
 

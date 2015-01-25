@@ -17,6 +17,9 @@
  */
 package com.banjocreek.riverbed.builder.enummap;
 
+import com.banjocreek.riverbed.builder.map.MapDelta;
+import com.banjocreek.riverbed.builder.map.MapKernel;
+
 final class Nop<K extends Enum<K>, V> implements MapDelta<K, V> {
 
     private static final Nop<?, ?> INSTANCE = new Nop<>();
@@ -27,7 +30,7 @@ final class Nop<K extends Enum<K>, V> implements MapDelta<K, V> {
     }
 
     @Override
-    public void applyTo(final EnumMapKernel<K, V> kernel) {
+    public void applyTo(final MapKernel<K, V> kernel) {
     }
 
 }

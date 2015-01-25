@@ -15,10 +15,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.banjocreek.riverbed.builder.enummap;
+package com.banjocreek.riverbed.builder.map;
 
 public interface MapDelta<K extends Enum<K>, V> {
 
-    void applyTo(EnumMapKernel<K, V> kernel);
+    void applyTo(MapKernel<K, V> kernel);
 
 }

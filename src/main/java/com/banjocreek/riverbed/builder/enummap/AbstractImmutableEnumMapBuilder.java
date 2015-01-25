@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 import com.banjocreek.riverbed.builder.AbstractImmutableBuilder;
+import com.banjocreek.riverbed.builder.map.MapDelta;
 
 public abstract class AbstractImmutableEnumMapBuilder<K extends Enum<K>, V, R, P>
         extends

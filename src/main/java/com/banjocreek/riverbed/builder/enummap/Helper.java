@@ -21,6 +21,8 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import com.banjocreek.riverbed.builder.map.MapDelta;
+
 final class Helper {
 
     public static <KK extends Enum<KK>, VV, X> Function<EnumMapKernel<KK, VV>, X> adaptConstructor(

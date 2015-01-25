@@ -29,7 +29,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.banjocreek.riverbed.builder.enummap.AbstractImmutableEnumMapBuilder;
-import com.banjocreek.riverbed.builder.enummap.MapDelta;
+import com.banjocreek.riverbed.builder.map.MapDelta;
 
 public class ImmutableMapBuilderTest {
 
