@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package pgmr.com.banjocreek.riverbed.builder.map;
+package pgmr.com.banjocreek.riverbed.builder.enummap;
 
 import static org.junit.Assert.*;
 
@@ -28,8 +28,8 @@ import java.util.function.Function;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.banjocreek.riverbed.builder.map.AbstractImmutableMapBuilder;
-import com.banjocreek.riverbed.builder.map.MapDelta;
+import com.banjocreek.riverbed.builder.enummap.AbstractImmutableMapBuilder;
+import com.banjocreek.riverbed.builder.enummap.MapDelta;
 
 public class ImmutableMapBuilderTest {
 

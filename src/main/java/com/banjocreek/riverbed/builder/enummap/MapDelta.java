@@ -15,30 +15,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.banjocreek.riverbed.builder.map;
+package com.banjocreek.riverbed.builder.enummap;
 
-import java.util.Map;
-import java.util.function.Function;
-import java.util.function.Supplier;
+public interface MapDelta<K extends Enum<K>, V> {
 
-final class Helper {
-
-    public static <KK extends Enum<KK>, VV, X> Function<MapKernel<KK, VV>, X> adaptConstructor(
-            final Function<Map<KK, VV>, X> constructor) {
-
-        return mk -> constructor.apply(mk.merge());
-
-    }
-
-    public static <KK extends Enum<KK>, VV> Supplier<MapKernel<KK, VV>> initializer(
-            final Class<KK> keyType) {
-        return () -> new MapKernel<>(keyType);
-    }
-
-    public static final <KK extends Enum<KK>, VV> MapKernel<KK, VV> mutate(
-            final MapKernel<KK, VV> t, final MapDelta<KK, VV> u) {
-        u.applyTo(t);
-        return t;
-    }
+    void applyTo(MapKernel<K, V> kernel);
 
 }

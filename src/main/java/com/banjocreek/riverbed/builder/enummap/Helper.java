@@ -15,27 +15,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.banjocreek.riverbed.builder.map;
+package com.banjocreek.riverbed.builder.enummap;
 
-import java.util.Collection;
-import java.util.EnumSet;
-import java.util.Set;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
-final class Remove<K extends Enum<K>, V> implements MapDelta<K, V> {
+final class Helper {
 
-    private final Set<K> keys;
+    public static <KK extends Enum<KK>, VV, X> Function<MapKernel<KK, VV>, X> adaptConstructor(
+            final Function<Map<KK, VV>, X> constructor) {
 
-    public Remove(final Collection<K> keys) {
-        this.keys = EnumSet.copyOf(keys);
+        return mk -> constructor.apply(mk.merge());
+
     }
 
-    public Remove(final K key) {
-        this.keys = EnumSet.of(key);
+    public static <KK extends Enum<KK>, VV> Supplier<MapKernel<KK, VV>> initializer(
+            final Class<KK> keyType) {
+        return () -> new MapKernel<>(keyType);
     }
 
-    @Override
-    public void applyTo(final MapKernel<K, V> kernel) {
-        kernel.remove(this.keys);
+    public static final <KK extends Enum<KK>, VV> MapKernel<KK, VV> mutate(
+            final MapKernel<KK, VV> t, final MapDelta<KK, VV> u) {
+        u.applyTo(t);
+        return t;
     }
 
 }
