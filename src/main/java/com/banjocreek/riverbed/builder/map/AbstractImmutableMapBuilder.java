@@ -82,7 +82,7 @@ public abstract class AbstractImmutableMapBuilder<K, V, R, P> extends
      */
     protected final MapDelta<K, V> entries(final K key, final V value) {
 
-        return new Entries<>(key, value);
+        return new Values<>(key, value);
 
     }
 
@@ -95,7 +95,7 @@ public abstract class AbstractImmutableMapBuilder<K, V, R, P> extends
      * @return delta
      */
     protected final MapDelta<K, V> entries(final Map<K, ? extends V> entries) {
-        return entries.isEmpty() ? Nop.instance() : new Entries<>(entries);
+        return entries.isEmpty() ? Nop.instance() : new Values<>(entries);
 
     }
 

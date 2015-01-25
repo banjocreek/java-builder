@@ -29,7 +29,7 @@ public interface MapKernel<K, V> {
      * </p>
      * <p>
      * The order in which this is invoked with respect to
-     * {@link #remove(Collection)} and {@link #entries(Map)} is unimportant.
+     * {@link #remove(Collection)} and {@link #values(Map)} is unimportant.
      * However the order in which this method is invoked with respect to other
      * invocations of {@link #defaults(Map)} is significant. Later invocations
      * override the defaults set in previous invocations.
@@ -39,34 +39,17 @@ public interface MapKernel<K, V> {
      */
     public void defaults(final Map<K, V> additional);
 
-    /**
-     * <p>
-     * Set or update values. Any entries provide here will occur in the
-     * resulting map unless subsequently removed or replaced
-     * </p>
-     * <p>
-     * The order in which this is invoked with respect to
-     * {@link #remove(Collection)} and other invocations of
-     * {@link #entries(Map)} determines the the final result with later
-     * operations taking precedence. It does not matter the order this method is
-     * invoked with respect to {@link #defaults(Map)}.
-     * </p>
-     *
-     * @param additional
-     */
-    public void entries(final Map<K, V> additional);
-
     public Map<K, V> merge();
 
     /**
      * <p>
      * Remove entries from the resulting map. Values with the keys presented
      * here will not be in the map unless subsequently set with
-     * {@link #entries(Map)}. If a removed value is present in an invocation of
+     * {@link #values(Map)}. If a removed value is present in an invocation of
      * {@link #defaults(Map)}, the default has no effect and the result will not
      * contain a value for the key.
      * <p>
-     * The order in which this is invoked with respect to {@link #entries(Map)}
+     * The order in which this is invoked with respect to {@link #values(Map)}
      * and other invocations of {@link #remove(Collection)} determines the the
      * final result with later operations taking precedence. It does not matter
      * the order this method is invoked with respect to {@link #defaults(Map)}.
@@ -76,5 +59,22 @@ public interface MapKernel<K, V> {
      *            keys of entries to remove.
      */
     public void remove(final Collection<K> toRemove);
+
+    /**
+     * <p>
+     * Set or update values. Any entries provide here will occur in the
+     * resulting map unless subsequently removed or replaced
+     * </p>
+     * <p>
+     * The order in which this is invoked with respect to
+     * {@link #remove(Collection)} and other invocations of {@link #values(Map)}
+     * determines the the final result with later operations taking precedence.
+     * It does not matter the order this method is invoked with respect to
+     * {@link #defaults(Map)}.
+     * </p>
+     *
+     * @param additional
+     */
+    public void values(final Map<K, V> additional);
 
 }

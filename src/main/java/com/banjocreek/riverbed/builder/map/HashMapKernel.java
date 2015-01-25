@@ -32,14 +32,14 @@ final class HashMapKernel<K, V> implements MapKernel<K, V> {
 
     /**
      * Entry accumulator. Map entries are removed or added by the
-     * {@link #entries(Map)} and {@link #remove(Collection)} operations.
+     * {@link #values(Map)} and {@link #remove(Collection)} operations.
      */
     private final HashMap<K, V> entries = new HashMap<>();
 
     /**
      * All seen keys, i.e. all keys for which default has been overridden. A
-     * seen key comes from a {@link #remove(Collection)} or
-     * {@link #entries(Map)} invocation.
+     * seen key comes from a {@link #remove(Collection)} or {@link #values(Map)}
+     * invocation.
      */
     private final HashSet<K> seen = new HashSet<>();
 
@@ -47,14 +47,6 @@ final class HashMapKernel<K, V> implements MapKernel<K, V> {
     public void defaults(final Map<K, V> additional) {
 
         this.defaults.putAll(additional);
-
-    }
-
-    @Override
-    public void entries(final Map<K, V> additional) {
-
-        this.entries.putAll(additional);
-        this.seen.addAll(additional.keySet());
 
     }
 
@@ -84,6 +76,14 @@ final class HashMapKernel<K, V> implements MapKernel<K, V> {
 
         this.entries.keySet().removeAll(toRemove);
         this.seen.addAll(toRemove);
+
+    }
+
+    @Override
+    public void values(final Map<K, V> additional) {
+
+        this.entries.putAll(additional);
+        this.seen.addAll(additional.keySet());
 
     }
 

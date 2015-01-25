@@ -73,7 +73,7 @@ public abstract class AbstractMutableMapBuilder<K, V, P> extends
      */
     protected final void entries(final K key, final V value) {
 
-        apply(new Entries<>(key, value));
+        apply(new Values<>(key, value));
 
     }
 
@@ -86,7 +86,7 @@ public abstract class AbstractMutableMapBuilder<K, V, P> extends
      *
      */
     protected final void entries(final Map<K, ? extends V> entries) {
-        apply(entries.isEmpty() ? Nop.instance() : new Entries<>(entries));
+        apply(entries.isEmpty() ? Nop.instance() : new Values<>(entries));
 
     }
 

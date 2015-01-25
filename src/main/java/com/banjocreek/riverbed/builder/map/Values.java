@@ -22,15 +22,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-final class Entries<K, V> implements MapDelta<K, V> {
+final class Values<K, V> implements MapDelta<K, V> {
 
     private final Map<K, V> entries;
 
-    public Entries(final K k, final V v) {
+    public Values(final K k, final V v) {
         this.entries = Collections.singletonMap(Objects.requireNonNull(k), v);
     }
 
-    public Entries(final Map<K, ? extends V> entries) {
+    public Values(final Map<K, ? extends V> entries) {
         final HashMap<K, V> temp = new HashMap<>(entries);
         Helper.requireKeys(temp.keySet());
         this.entries = temp;
@@ -39,7 +39,7 @@ final class Entries<K, V> implements MapDelta<K, V> {
     @Override
     public void applyTo(final MapKernel<K, V> kernel) {
 
-        kernel.entries(this.entries);
+        kernel.values(this.entries);
 
     }
 
