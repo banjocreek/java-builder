@@ -53,7 +53,7 @@ public final class MapBuilder<R, P>
 
     private MapBuilder(final Function<Map<String, String>, R> builder,
             final Function<Map<String, String>, P> constructor) {
-        super(INITIALIZER, MUTATOR, constructor, builder);
+        super(INITIALIZER, MUTATOR, builder, constructor);
     }
 
     private MapBuilder(final MapBuilder<R, P> previous,

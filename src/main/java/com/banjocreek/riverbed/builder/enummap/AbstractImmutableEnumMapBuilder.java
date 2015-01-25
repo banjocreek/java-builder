@@ -35,11 +35,11 @@ public abstract class AbstractImmutableEnumMapBuilder<K extends Enum<K>, V, R, P
     }
 
     protected AbstractImmutableEnumMapBuilder(final Class<K> keyType,
-            final Function<Map<K, V>, P> parentConstructor,
-            final Function<Map<K, V>, R> rootConstructor) {
+            final Function<Map<K, V>, R> rootConstructor,
+            final Function<Map<K, V>, P> parentConstructor) {
         super(Helper.initializer(keyType), Helper::mutate, Helper
-                .adaptConstructor(parentConstructor), Helper
-                .adaptConstructor(rootConstructor));
+                .adaptConstructor(rootConstructor), Helper
+                .adaptConstructor(parentConstructor));
     }
 
     /**
@@ -72,36 +72,6 @@ public abstract class AbstractImmutableEnumMapBuilder<K extends Enum<K>, V, R, P
     }
 
     /**
-     * Create a delta consisting of map entries.
-     *
-     * @param key
-     *            key of entry
-     *
-     * @param value
-     *            value of entry
-     *
-     * @return delta
-     */
-    protected final MapDelta<K, V> entries(final K key, final V value) {
-
-        return new Values<>(key, value);
-
-    }
-
-    /**
-     * Create a delta consisting of map entries.
-     *
-     * @param entries
-     *            entries.
-     *
-     * @return delta
-     */
-    protected final MapDelta<K, V> entries(final Map<K, ? extends V> entries) {
-        return entries.isEmpty() ? Nop.instance() : new Values<>(entries);
-
-    }
-
-    /**
      * Create a delta consisting of items to remove.
      *
      * @param toRemove
@@ -123,6 +93,36 @@ public abstract class AbstractImmutableEnumMapBuilder<K extends Enum<K>, V, R, P
      */
     protected final MapDelta<K, V> remove(final K toRemove) {
         return new Remove<>(toRemove);
+    }
+
+    /**
+     * Create a delta consisting of map entries.
+     *
+     * @param key
+     *            key of entry
+     *
+     * @param value
+     *            value of entry
+     *
+     * @return delta
+     */
+    protected final MapDelta<K, V> values(final K key, final V value) {
+
+        return new Values<>(key, value);
+
+    }
+
+    /**
+     * Create a delta consisting of map entries.
+     *
+     * @param entries
+     *            entries.
+     *
+     * @return delta
+     */
+    protected final MapDelta<K, V> values(final Map<K, ? extends V> entries) {
+        return entries.isEmpty() ? Nop.instance() : new Values<>(entries);
+
     }
 
 }

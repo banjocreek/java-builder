@@ -26,7 +26,7 @@ import com.banjocreek.riverbed.builder.AbstractMutableBuilder;
 public abstract class AbstractMutableMapBuilder<K, V, P> extends
         AbstractMutableBuilder<HashMapKernel<K, V>, MapDelta<K, V>, P> {
 
-    public AbstractMutableMapBuilder(final Function<Map<K, V>, P> constructor) {
+    protected AbstractMutableMapBuilder(final Function<Map<K, V>, P> constructor) {
         super(HashMapKernel::new, Helper::mutate, Helper
                 .adaptConstructor(constructor));
     }
@@ -61,36 +61,6 @@ public abstract class AbstractMutableMapBuilder<K, V, P> extends
     }
 
     /**
-     * Post a delta consisting of map entries.
-     *
-     * @param key
-     *            key of entry
-     *
-     * @param value
-     *            value of entry
-     *
-     *
-     */
-    protected final void entries(final K key, final V value) {
-
-        apply(new Values<>(key, value));
-
-    }
-
-    /**
-     * Post a delta consisting of map entries.
-     *
-     * @param entries
-     *            entries.
-     *
-     *
-     */
-    protected final void entries(final Map<K, ? extends V> entries) {
-        apply(entries.isEmpty() ? Nop.instance() : new Values<>(entries));
-
-    }
-
-    /**
      * Post a delta consisting of items to remove.
      *
      * @param toRemove
@@ -113,6 +83,36 @@ public abstract class AbstractMutableMapBuilder<K, V, P> extends
     protected final void remove(final K toRemove) {
 
         apply(new Remove<>(toRemove));
+    }
+
+    /**
+     * Post a delta consisting of map entries.
+     *
+     * @param key
+     *            key of entry
+     *
+     * @param value
+     *            value of entry
+     *
+     *
+     */
+    protected final void values(final K key, final V value) {
+
+        apply(new Values<>(key, value));
+
+    }
+
+    /**
+     * Post a delta consisting of map entries.
+     *
+     * @param entries
+     *            entries.
+     *
+     *
+     */
+    protected final void values(final Map<K, ? extends V> entries) {
+        apply(entries.isEmpty() ? Nop.instance() : new Values<>(entries));
+
     }
 
 }

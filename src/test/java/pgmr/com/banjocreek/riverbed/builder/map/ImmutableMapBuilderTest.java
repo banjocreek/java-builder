@@ -381,13 +381,13 @@ public class ImmutableMapBuilderTest {
             AbstractImmutableMapBuilder<TestKey, Object, Map<String, String>, Map<TestKey, Object>> {
 
         public TestBuilder() {
-            super(Function.identity(), m -> {
+            super(m -> {
                 final HashMap<String, String> rval = new HashMap<>();
                 m.forEach((k, v) -> {
                     rval.put(String.valueOf(k), String.valueOf(v));
                 });
                 return rval;
-            });
+            }, Function.identity());
         }
 
         protected TestBuilder(final TestBuilder previous,
@@ -396,15 +396,15 @@ public class ImmutableMapBuilderTest {
         }
 
         public TestBuilder a(final Object v) {
-            return new TestBuilder(this, entries(TestKey.A, v));
+            return new TestBuilder(this, values(TestKey.A, v));
         }
 
         public TestBuilder b(final Object v) {
-            return new TestBuilder(this, entries(TestKey.B, v));
+            return new TestBuilder(this, values(TestKey.B, v));
         }
 
         public TestBuilder c(final Object v) {
-            return new TestBuilder(this, entries(TestKey.C, v));
+            return new TestBuilder(this, values(TestKey.C, v));
         }
 
         public TestBuilder def(final Map<TestKey, Object> vs) {
@@ -448,11 +448,11 @@ public class ImmutableMapBuilderTest {
         }
 
         public TestBuilder val(final Map<TestKey, Object> vs) {
-            return new TestBuilder(this, entries(vs));
+            return new TestBuilder(this, values(vs));
         }
 
         public TestBuilder val(final TestKey k, final Object v) {
-            return new TestBuilder(this, entries(k, v));
+            return new TestBuilder(this, values(k, v));
         }
 
     }

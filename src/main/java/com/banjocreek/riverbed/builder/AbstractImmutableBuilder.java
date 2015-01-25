@@ -25,44 +25,45 @@ import java.util.function.Supplier;
 public abstract class AbstractImmutableBuilder<T, D, R, P> implements
         ImmutableBuilder<R, P> {
 
-    private final Function<T, R> builder;
-
-    private final Function<T, P> constructor;
-
     private final Optional<Link> head;
 
     private final Function<Optional<Link>, T> merge;
 
+    private final Function<T, P> parentConstructor;
+
+    private final Function<T, R> rootConstructor;
+
     protected AbstractImmutableBuilder(
             final AbstractImmutableBuilder<T, D, R, P> previous, final D delta) {
         this.merge = previous.merge;
-        this.constructor = previous.constructor;
-        this.builder = previous.builder;
+        this.parentConstructor = previous.parentConstructor;
+        this.rootConstructor = previous.rootConstructor;
         this.head = Optional.of(new Link(delta, previous.head));
 
     }
 
     protected AbstractImmutableBuilder(final Supplier<T> initializer,
             final BiFunction<T, D, T> mutator,
-            final Function<T, P> constructor, final Function<T, R> builder) {
+            final Function<T, R> rootConstructor,
+            final Function<T, P> parentConstructor) {
 
         this.merge = ol -> {
             return fold(initializer.get(), ol, mutator);
         };
-        this.constructor = constructor;
-        this.builder = builder;
+        this.parentConstructor = parentConstructor;
+        this.rootConstructor = rootConstructor;
         this.head = Optional.empty();
 
     }
 
     @Override
     public final R build() {
-        return this.builder.apply(this.merge.apply(this.head));
+        return this.rootConstructor.apply(this.merge.apply(this.head));
     }
 
     @Override
     public final P done() {
-        return this.constructor.apply(this.merge.apply(this.head));
+        return this.parentConstructor.apply(this.merge.apply(this.head));
     }
 
     private T fold(final T initial, final Optional<Link> mlink,

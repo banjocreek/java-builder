@@ -27,7 +27,7 @@ import com.banjocreek.riverbed.builder.map.MapDelta;
 public abstract class AbstractMutableEnumMapBuilder<K extends Enum<K>, V, P>
         extends AbstractMutableBuilder<EnumMapKernel<K, V>, MapDelta<K, V>, P> {
 
-    public AbstractMutableEnumMapBuilder(final Class<K> keyType,
+    protected AbstractMutableEnumMapBuilder(final Class<K> keyType,
             final Function<Map<K, V>, P> constructor) {
         super(Helper.initializer(keyType), Helper::mutate, Helper
                 .adaptConstructor(constructor));
@@ -63,36 +63,6 @@ public abstract class AbstractMutableEnumMapBuilder<K extends Enum<K>, V, P>
     }
 
     /**
-     * Post a delta consisting of map entries.
-     *
-     * @param key
-     *            key of entry
-     *
-     * @param value
-     *            value of entry
-     *
-     *
-     */
-    protected final void entries(final K key, final V value) {
-
-        apply(new Values<>(key, value));
-
-    }
-
-    /**
-     * Post a delta consisting of map entries.
-     *
-     * @param entries
-     *            entries.
-     *
-     *
-     */
-    protected final void entries(final Map<K, ? extends V> entries) {
-        apply(entries.isEmpty() ? Nop.instance() : new Values<>(entries));
-
-    }
-
-    /**
      * Post a delta consisting of items to remove.
      *
      * @param toRemove
@@ -115,6 +85,36 @@ public abstract class AbstractMutableEnumMapBuilder<K extends Enum<K>, V, P>
     protected final void remove(final K toRemove) {
 
         apply(new Remove<>(toRemove));
+    }
+
+    /**
+     * Post a delta consisting of map entries.
+     *
+     * @param key
+     *            key of entry
+     *
+     * @param value
+     *            value of entry
+     *
+     *
+     */
+    protected final void values(final K key, final V value) {
+
+        apply(new Values<>(key, value));
+
+    }
+
+    /**
+     * Post a delta consisting of map entries.
+     *
+     * @param entries
+     *            entries.
+     *
+     *
+     */
+    protected final void values(final Map<K, ? extends V> entries) {
+        apply(entries.isEmpty() ? Nop.instance() : new Values<>(entries));
+
     }
 
 }
