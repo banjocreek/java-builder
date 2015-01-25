@@ -36,6 +36,7 @@ public interface MapKernel<K, V> {
      * </p>
      *
      * @param additional
+     *            additional defaults to accumulate.
      */
     public void defaults(final Map<K, V> additional);
 
@@ -74,6 +75,7 @@ public interface MapKernel<K, V> {
      * </p>
      *
      * @param additional
+     *            values to accumulate.
      */
     public void values(final Map<K, V> additional);
 

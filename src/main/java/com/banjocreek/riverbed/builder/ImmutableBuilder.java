@@ -35,7 +35,7 @@ public interface ImmutableBuilder<R, P> {
      * {@link #done()} on the returning instance and so on until reaching the
      * root.
      *
-     * @return
+     * @return root object specified by this builder.
      */
     R build();
 
