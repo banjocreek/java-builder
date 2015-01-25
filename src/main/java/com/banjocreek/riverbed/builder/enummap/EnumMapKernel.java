@@ -22,7 +22,7 @@ import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.Map;
 
-final class MapKernel<K extends Enum<K>, V> {
+final class EnumMapKernel<K extends Enum<K>, V> {
 
     /**
      * Defaults accumulator. Default entries are added or updated with the
@@ -43,7 +43,7 @@ final class MapKernel<K extends Enum<K>, V> {
      */
     private final EnumSet<K> seen;
 
-    public MapKernel(final Class<K> keyType) {
+    public EnumMapKernel(final Class<K> keyType) {
         this.defaults = new EnumMap<>(keyType);
         this.entries = new EnumMap<>(keyType);
         this.seen = EnumSet.noneOf(keyType);

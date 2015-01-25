@@ -23,16 +23,17 @@ import java.util.function.Function;
 
 import com.banjocreek.riverbed.builder.AbstractImmutableBuilder;
 
-public abstract class AbstractImmutableMapBuilder<K extends Enum<K>, V, R, P>
-        extends AbstractImmutableBuilder<MapKernel<K, V>, MapDelta<K, V>, R, P> {
+public abstract class AbstractImmutableEnumMapBuilder<K extends Enum<K>, V, R, P>
+        extends
+        AbstractImmutableBuilder<EnumMapKernel<K, V>, MapDelta<K, V>, R, P> {
 
-    protected AbstractImmutableMapBuilder(
-            final AbstractImmutableMapBuilder<K, V, R, P> previous,
+    protected AbstractImmutableEnumMapBuilder(
+            final AbstractImmutableEnumMapBuilder<K, V, R, P> previous,
             final MapDelta<K, V> delta) {
         super(previous, delta);
     }
 
-    protected AbstractImmutableMapBuilder(final Class<K> keyType,
+    protected AbstractImmutableEnumMapBuilder(final Class<K> keyType,
             final Function<Map<K, V>, P> parentConstructor,
             final Function<Map<K, V>, R> rootConstructor) {
         super(Helper.initializer(keyType), Helper::mutate, Helper

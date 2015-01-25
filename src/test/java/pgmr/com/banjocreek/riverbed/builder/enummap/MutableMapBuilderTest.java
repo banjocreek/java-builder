@@ -28,7 +28,7 @@ import java.util.function.Function;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.banjocreek.riverbed.builder.enummap.AbstractMutableMapBuilder;
+import com.banjocreek.riverbed.builder.enummap.AbstractMutableEnumMapBuilder;
 
 public class MutableMapBuilderTest {
 
@@ -351,8 +351,9 @@ public class MutableMapBuilderTest {
         assertEquals(expected, actual);
     }
 
-    static final class TestBuilder extends
-            AbstractMutableMapBuilder<TestKey, Object, Map<TestKey, Object>> {
+    static final class TestBuilder
+            extends
+            AbstractMutableEnumMapBuilder<TestKey, Object, Map<TestKey, Object>> {
 
         public TestBuilder() {
             super(TestKey.class, Function.identity());

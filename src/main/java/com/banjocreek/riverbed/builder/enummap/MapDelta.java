@@ -19,6 +19,6 @@ package com.banjocreek.riverbed.builder.enummap;
 
 public interface MapDelta<K extends Enum<K>, V> {
 
-    void applyTo(MapKernel<K, V> kernel);
+    void applyTo(EnumMapKernel<K, V> kernel);
 
 }

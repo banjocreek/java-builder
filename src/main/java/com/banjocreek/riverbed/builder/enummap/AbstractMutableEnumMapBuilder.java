@@ -23,10 +23,10 @@ import java.util.function.Function;
 
 import com.banjocreek.riverbed.builder.AbstractMutableBuilder;
 
-public abstract class AbstractMutableMapBuilder<K extends Enum<K>, V, P>
-        extends AbstractMutableBuilder<MapKernel<K, V>, MapDelta<K, V>, P> {
+public abstract class AbstractMutableEnumMapBuilder<K extends Enum<K>, V, P>
+        extends AbstractMutableBuilder<EnumMapKernel<K, V>, MapDelta<K, V>, P> {
 
-    public AbstractMutableMapBuilder(final Class<K> keyType,
+    public AbstractMutableEnumMapBuilder(final Class<K> keyType,
             final Function<Map<K, V>, P> constructor) {
         super(Helper.initializer(keyType), Helper::mutate, Helper
                 .adaptConstructor(constructor));

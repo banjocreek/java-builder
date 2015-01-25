@@ -23,20 +23,20 @@ import java.util.function.Supplier;
 
 final class Helper {
 
-    public static <KK extends Enum<KK>, VV, X> Function<MapKernel<KK, VV>, X> adaptConstructor(
+    public static <KK extends Enum<KK>, VV, X> Function<EnumMapKernel<KK, VV>, X> adaptConstructor(
             final Function<Map<KK, VV>, X> constructor) {
 
         return mk -> constructor.apply(mk.merge());
 
     }
 
-    public static <KK extends Enum<KK>, VV> Supplier<MapKernel<KK, VV>> initializer(
+    public static <KK extends Enum<KK>, VV> Supplier<EnumMapKernel<KK, VV>> initializer(
             final Class<KK> keyType) {
-        return () -> new MapKernel<>(keyType);
+        return () -> new EnumMapKernel<>(keyType);
     }
 
-    public static final <KK extends Enum<KK>, VV> MapKernel<KK, VV> mutate(
-            final MapKernel<KK, VV> t, final MapDelta<KK, VV> u) {
+    public static final <KK extends Enum<KK>, VV> EnumMapKernel<KK, VV> mutate(
+            final EnumMapKernel<KK, VV> t, final MapDelta<KK, VV> u) {
         u.applyTo(t);
         return t;
     }

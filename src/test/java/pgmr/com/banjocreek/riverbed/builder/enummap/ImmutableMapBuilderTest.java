@@ -28,7 +28,7 @@ import java.util.function.Function;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.banjocreek.riverbed.builder.enummap.AbstractImmutableMapBuilder;
+import com.banjocreek.riverbed.builder.enummap.AbstractImmutableEnumMapBuilder;
 import com.banjocreek.riverbed.builder.enummap.MapDelta;
 
 public class ImmutableMapBuilderTest {
@@ -378,7 +378,7 @@ public class ImmutableMapBuilderTest {
 
     static final class TestBuilder
             extends
-            AbstractImmutableMapBuilder<TestKey, Object, Map<String, String>, Map<TestKey, Object>> {
+            AbstractImmutableEnumMapBuilder<TestKey, Object, Map<String, String>, Map<TestKey, Object>> {
 
         public TestBuilder() {
             super(TestKey.class, Function.identity(), m -> {

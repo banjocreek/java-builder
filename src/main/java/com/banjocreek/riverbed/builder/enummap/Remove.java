@@ -34,7 +34,7 @@ final class Remove<K extends Enum<K>, V> implements MapDelta<K, V> {
     }
 
     @Override
-    public void applyTo(final MapKernel<K, V> kernel) {
+    public void applyTo(final EnumMapKernel<K, V> kernel) {
         kernel.remove(this.keys);
     }
 
