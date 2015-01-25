@@ -46,7 +46,7 @@ public final class ThingBuilder<R, P> extends
 
     private ThingBuilder(final Function<StringBuilder, R> builder,
             final Function<StringBuilder, P> constructor) {
-        super(INITIALIZER, MUTATOR, constructor, builder);
+        super(INITIALIZER, MUTATOR, builder, constructor);
     }
 
     private ThingBuilder(final ThingBuilder<R, P> previous, final String delta) {

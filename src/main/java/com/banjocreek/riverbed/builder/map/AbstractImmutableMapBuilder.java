@@ -36,8 +36,8 @@ public abstract class AbstractImmutableMapBuilder<K, V, R, P> extends
             final Function<Map<K, V>, P> parentConstructor,
             final Function<Map<K, V>, R> rootConstructor) {
         super(HashMapKernel::new, Helper::mutate, Helper
-                .adaptConstructor(parentConstructor), Helper
-                .adaptConstructor(rootConstructor));
+                .adaptConstructor(rootConstructor), Helper
+                .adaptConstructor(parentConstructor));
     }
 
     /**

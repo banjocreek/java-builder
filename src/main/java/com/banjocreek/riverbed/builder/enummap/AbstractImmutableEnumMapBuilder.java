@@ -38,8 +38,8 @@ public abstract class AbstractImmutableEnumMapBuilder<K extends Enum<K>, V, R, P
             final Function<Map<K, V>, P> parentConstructor,
             final Function<Map<K, V>, R> rootConstructor) {
         super(Helper.initializer(keyType), Helper::mutate, Helper
-                .adaptConstructor(parentConstructor), Helper
-                .adaptConstructor(rootConstructor));
+                .adaptConstructor(rootConstructor), Helper
+                .adaptConstructor(parentConstructor));
     }
 
     /**

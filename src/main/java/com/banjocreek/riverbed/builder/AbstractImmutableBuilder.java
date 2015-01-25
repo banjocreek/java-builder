@@ -44,8 +44,8 @@ public abstract class AbstractImmutableBuilder<T, D, R, P> implements
 
     protected AbstractImmutableBuilder(final Supplier<T> initializer,
             final BiFunction<T, D, T> mutator,
-            final Function<T, P> parentConstructor,
-            final Function<T, R> rootConstructor) {
+            final Function<T, R> rootConstructor,
+            final Function<T, P> parentConstructor) {
 
         this.merge = ol -> {
             return fold(initializer.get(), ol, mutator);

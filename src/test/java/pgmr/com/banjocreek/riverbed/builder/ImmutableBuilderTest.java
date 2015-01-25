@@ -132,8 +132,8 @@ public class ImmutableBuilderTest {
             AbstractImmutableBuilder<StringBuilder, Object, R, P> {
         public SBuilder(final Function<StringBuilder, R> builder,
                 final Function<StringBuilder, P> constructor) {
-            super(StringBuilder::new, StringBuilder::append, constructor,
-                    builder);
+            super(StringBuilder::new, StringBuilder::append, builder,
+                    constructor);
         }
 
         private SBuilder(final SBuilder<R, P> prev, final Object delta) {
