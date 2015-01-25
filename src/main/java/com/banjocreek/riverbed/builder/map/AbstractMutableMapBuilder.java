@@ -26,7 +26,7 @@ import com.banjocreek.riverbed.builder.AbstractMutableBuilder;
 public abstract class AbstractMutableMapBuilder<K, V, P> extends
         AbstractMutableBuilder<HashMapKernel<K, V>, MapDelta<K, V>, P> {
 
-    public AbstractMutableMapBuilder(final Function<Map<K, V>, P> constructor) {
+    protected AbstractMutableMapBuilder(final Function<Map<K, V>, P> constructor) {
         super(HashMapKernel::new, Helper::mutate, Helper
                 .adaptConstructor(constructor));
     }

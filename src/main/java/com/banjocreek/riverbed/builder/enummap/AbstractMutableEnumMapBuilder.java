@@ -27,7 +27,7 @@ import com.banjocreek.riverbed.builder.map.MapDelta;
 public abstract class AbstractMutableEnumMapBuilder<K extends Enum<K>, V, P>
         extends AbstractMutableBuilder<EnumMapKernel<K, V>, MapDelta<K, V>, P> {
 
-    public AbstractMutableEnumMapBuilder(final Class<K> keyType,
+    protected AbstractMutableEnumMapBuilder(final Class<K> keyType,
             final Function<Map<K, V>, P> constructor) {
         super(Helper.initializer(keyType), Helper::mutate, Helper
                 .adaptConstructor(constructor));

@@ -30,7 +30,7 @@ public abstract class AbstractMutableBuilder<T, D, P> implements
 
     private T state = null;
 
-    public AbstractMutableBuilder(final Supplier<T> initializer,
+    protected AbstractMutableBuilder(final Supplier<T> initializer,
             final BiFunction<T, D, T> mutator, final Function<T, P> constructor) {
         super();
         this.mutator = mutator;
