@@ -381,13 +381,13 @@ public class ImmutableMapBuilderTest {
             AbstractImmutableMapBuilder<TestKey, Object, Map<String, String>, Map<TestKey, Object>> {
 
         public TestBuilder() {
-            super(Function.identity(), m -> {
+            super(m -> {
                 final HashMap<String, String> rval = new HashMap<>();
                 m.forEach((k, v) -> {
                     rval.put(String.valueOf(k), String.valueOf(v));
                 });
                 return rval;
-            });
+            }, Function.identity());
         }
 
         protected TestBuilder(final TestBuilder previous,

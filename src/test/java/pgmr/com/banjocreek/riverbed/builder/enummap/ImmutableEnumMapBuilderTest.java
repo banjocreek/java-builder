@@ -381,13 +381,13 @@ public class ImmutableEnumMapBuilderTest {
             AbstractImmutableEnumMapBuilder<TestKey, Object, Map<String, String>, Map<TestKey, Object>> {
 
         public TestBuilder() {
-            super(TestKey.class, Function.identity(), m -> {
+            super(TestKey.class, m -> {
                 final HashMap<String, String> rval = new HashMap<>();
                 m.forEach((k, v) -> {
                     rval.put(String.valueOf(k), String.valueOf(v));
                 });
                 return rval;
-            });
+            }, Function.identity());
         }
 
         protected TestBuilder(final TestBuilder previous,
