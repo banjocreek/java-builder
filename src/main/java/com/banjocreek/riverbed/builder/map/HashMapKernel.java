@@ -38,11 +38,10 @@ final class HashMapKernel<K, V> implements MapKernel<K, V> {
     private final HashMap<K, Function<? super V, ? extends V>> entries = new HashMap<>();
 
     /**
-     * All seen keys, i.e. all keys for which default has been overridden. A
-     * seen key comes from a {@link #remove(Collection)} or {@link #values(Map)}
-     * invocation.
+     * All removed keys, i.e. all keys to remove from defaults. This is tracked
+     * separately because defaults can be after removals.
      */
-    private final HashSet<K> seen = new HashSet<>();
+    private final HashSet<K> removed = new HashSet<>();
 
     @Override
     public void defaults(final Map<K, V> additional) {
@@ -62,7 +61,7 @@ final class HashMapKernel<K, V> implements MapKernel<K, V> {
         /*
          * get rid of everything for which default has been overridden
          */
-        rval.keySet().removeAll(this.seen);
+        rval.keySet().removeAll(this.removed);
 
         /*
          * apply accumulated entries.
@@ -78,7 +77,7 @@ final class HashMapKernel<K, V> implements MapKernel<K, V> {
     public void remove(final Collection<K> toRemove) {
 
         this.entries.keySet().removeAll(toRemove);
-        this.seen.addAll(toRemove);
+        this.removed.addAll(toRemove);
 
     }
 
@@ -96,7 +95,6 @@ final class HashMapKernel<K, V> implements MapKernel<K, V> {
         additional.forEach((k, v) -> {
             addEntry(k, any -> v);
         });
-        this.seen.addAll(additional.keySet());
 
     }
 
