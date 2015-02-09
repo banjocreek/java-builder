@@ -94,6 +94,31 @@ public abstract class AbstractImmutableMapBuilder<K, V, R, P> extends
     }
 
     /**
+     * Create a delta consisting of a single update.
+     *
+     * @param key
+     *            key of entry to update.
+     *
+     * @param mutate
+     *            mutation specification.
+     */
+    protected final MapDelta<K, V> updates(final K key,
+            final Function<? super V, ? extends V> mutate) {
+        return new Update<>(key, mutate);
+    }
+
+    /**
+     * Create a delta consisting of updates.
+     *
+     * @param mutators
+     *            mutations to apply
+     */
+    protected final MapDelta<K, V> updates(
+            final Map<K, Function<? super V, ? extends V>> mutators) {
+        return mutators.isEmpty() ? Nop.instance() : new Update<>(mutators);
+    }
+
+    /**
      * Create a delta consisting of map entries.
      *
      * @param key

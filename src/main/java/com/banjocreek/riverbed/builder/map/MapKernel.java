@@ -19,8 +19,9 @@ package com.banjocreek.riverbed.builder.map;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.function.Function;
 
-public interface MapKernel<K, V> {
+interface MapKernel<K, V> {
 
     /**
      * <p>
@@ -60,6 +61,20 @@ public interface MapKernel<K, V> {
      *            keys of entries to remove.
      */
     public void remove(final Collection<K> toRemove);
+
+    /**
+     * <p>
+     * Low-level update or set values. Values provided by the mutations will
+     * occur in the resulting map unless subsequently removed or replaced.
+     * </p>
+     *
+     * @param additional
+     *            mutations to apply. On merge, each function will be given the
+     *            result of the previously-computed value (or Optional.empty())
+     *            for its key.
+     */
+    public void updates(
+            final Map<K, Function<? super V, ? extends V>> additional);
 
     /**
      * <p>
