@@ -86,6 +86,31 @@ public abstract class AbstractMutableMapBuilder<K, V, P> extends
     }
 
     /**
+     * Post a delta consisting of a single update.
+     *
+     * @param key
+     *            key of entry to update.
+     *
+     * @param mutate
+     *            mutation specification.
+     */
+    protected final void updates(final K key,
+            final Function<? super V, ? extends V> mutate) {
+        apply(new Update<>(key, mutate));
+    }
+
+    /**
+     * Post a delta consisting of updates.
+     *
+     * @param mutators
+     *            mutations to apply
+     */
+    protected final void updates(
+            final Map<K, Function<? super V, ? extends V>> mutators) {
+        apply(mutators.isEmpty() ? Nop.instance() : new Update<>(mutators));
+    }
+
+    /**
      * Post a delta consisting of map entries.
      *
      * @param key

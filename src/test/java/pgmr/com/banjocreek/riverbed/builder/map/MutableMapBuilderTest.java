@@ -50,7 +50,7 @@ public class MutableMapBuilderTest {
         /*
          * when build is invoked
          */
-        final Map<TestKey, Object> built = b.merge();
+        final Map<TestKey, String> built = b.merge();
 
         /*
          * it creates a corresponding object
@@ -74,7 +74,7 @@ public class MutableMapBuilderTest {
         /*
          * when an object is built
          */
-        final Map<TestKey, Object> actual = b.merge();
+        final Map<TestKey, String> actual = b.merge();
 
         /*
          * the default does not override the remove
@@ -97,7 +97,7 @@ public class MutableMapBuilderTest {
         /*
          * when an object is built
          */
-        final Map<TestKey, Object> actual = b.merge();
+        final Map<TestKey, String> actual = b.merge();
 
         /*
          * the default does not override the valuet
@@ -140,7 +140,7 @@ public class MutableMapBuilderTest {
         /*
          * when an attempt to set a default with a null key is made
          */
-        final HashMap<TestKey, Object> defs = new HashMap<>();
+        final HashMap<TestKey, String> defs = new HashMap<>();
         defs.put(TestKey.A, "A");
         defs.put(null, "B");
         this.empty.def(defs);
@@ -163,7 +163,7 @@ public class MutableMapBuilderTest {
         /*
          * when an attempt to set a value with a null key is made
          */
-        final HashMap<TestKey, Object> ents = new HashMap<>();
+        final HashMap<TestKey, String> ents = new HashMap<>();
         ents.put(TestKey.A, "A");
         ents.put(null, "B");
         this.empty.val(ents);
@@ -206,7 +206,7 @@ public class MutableMapBuilderTest {
         /*
          * when an object is built
          */
-        final Map<TestKey, Object> actual = b.merge();
+        final Map<TestKey, String> actual = b.merge();
 
         /*
          * the remove wins
@@ -230,12 +230,12 @@ public class MutableMapBuilderTest {
         /*
          * when an object is built
          */
-        final Map<TestKey, Object> actual = b.merge();
+        final Map<TestKey, String> actual = b.merge();
 
         /*
          * the remove wins
          */
-        final Map<TestKey, Object> expected = new HashMap<>();
+        final Map<TestKey, String> expected = new HashMap<>();
         expected.put(TestKey.A, "AA");
 
         assertEquals(expected, actual);
@@ -253,12 +253,12 @@ public class MutableMapBuilderTest {
         /*
          * when an object is built
          */
-        final Map<TestKey, Object> actual = b.merge();
+        final Map<TestKey, String> actual = b.merge();
 
         /*
          * it creates the union
          */
-        final Map<TestKey, Object> expected = new HashMap<>();
+        final Map<TestKey, String> expected = new HashMap<>();
         expected.put(TestKey.A, "A");
         expected.put(TestKey.C, "CC");
 
@@ -316,15 +316,93 @@ public class MutableMapBuilderTest {
         /*
          * when an object is built
          */
-        final Map<TestKey, Object> actual = b.merge();
+        final Map<TestKey, String> actual = b.merge();
 
         /*
          * the remove overrides the default
          */
-        final Map<TestKey, Object> expected = new HashMap<>();
+        final Map<TestKey, String> expected = new HashMap<>();
         expected.put(TestKey.B, "B");
 
         assertEquals(expected, actual);
+
+    }
+
+    @Test
+    public void testUpdateDefault() {
+
+        /*
+         * given a builder with default value
+         */
+        final String value = "hello";
+        final TestBuilder b = this.empty.defa(value);
+
+        /*
+         * given an update function
+         */
+        final Function<String, String> f = s -> s + ", world";
+
+        /*
+         * when the value is updated with the function
+         */
+        b.upda(f);
+
+        /*
+         * the builder produces an updated value
+         */
+        assertEquals(f.apply(value), b.merge().get(TestKey.A));
+
+    }
+
+    @Test
+    public void testUpdateDefaultedThenSet() {
+
+        /*
+         * given a builder with default and set values
+         */
+        final String value = "hello";
+        final TestBuilder b = this.empty.defa("i am replaced").a(value);
+
+        /*
+         * given an update function
+         */
+        final Function<String, String> f = s -> s + ", world";
+
+        /*
+         * when the value is updated with the function
+         */
+        b.upda(f);
+
+        /*
+         * the builder produces an updated value
+         */
+        assertEquals(f.apply(value), b.merge().get(TestKey.A));
+
+    }
+
+    @Test
+    public void testUpdateNonDefault() {
+
+        /*
+         * given a builder with set value
+         */
+        final String value = "hello";
+        final TestBuilder b = this.empty.a(value);
+
+        /*
+         * given an update function
+         */
+        final Function<String, String> f = s -> s + ", world";
+
+        /*
+         * when the value is updated with the function
+         */
+        b.upda(f);
+
+        /*
+         * the builder produces an updated value
+         */
+        assertEquals(f.apply(value), b.merge().get(TestKey.A));
 
     }
 
@@ -339,12 +417,12 @@ public class MutableMapBuilderTest {
         /*
          * when an object is built
          */
-        final Map<TestKey, Object> actual = b.merge();
+        final Map<TestKey, String> actual = b.merge();
 
         /*
          * the entry overrides the default
          */
-        final Map<TestKey, Object> expected = new HashMap<>();
+        final Map<TestKey, String> expected = new HashMap<>();
         expected.put(TestKey.A, "AA");
         expected.put(TestKey.B, "B");
 
@@ -352,48 +430,48 @@ public class MutableMapBuilderTest {
     }
 
     static final class TestBuilder extends
-            AbstractMutableMapBuilder<TestKey, Object, Map<TestKey, Object>> {
+            AbstractMutableMapBuilder<TestKey, String, Map<TestKey, String>> {
 
         public TestBuilder() {
             super(Function.identity());
         }
 
-        public TestBuilder a(final Object v) {
+        public TestBuilder a(final String v) {
             values(TestKey.A, v);
             return this;
         }
 
-        public TestBuilder b(final Object v) {
+        public TestBuilder b(final String v) {
             values(TestKey.B, v);
             return this;
         }
 
-        public TestBuilder c(final Object v) {
+        public TestBuilder c(final String v) {
             values(TestKey.C, v);
             return this;
         }
 
-        public TestBuilder def(final Map<TestKey, Object> vs) {
+        public TestBuilder def(final Map<TestKey, String> vs) {
             defaults(vs);
             return this;
         }
 
-        public TestBuilder def(final TestKey k, final Object v) {
+        public TestBuilder def(final TestKey k, final String v) {
             defaults(k, v);
             return this;
         }
 
-        public TestBuilder defa(final Object v) {
+        public TestBuilder defa(final String v) {
             defaults(TestKey.A, v);
             return this;
         }
 
-        public TestBuilder defb(final Object v) {
+        public TestBuilder defb(final String v) {
             defaults(TestKey.B, v);
             return this;
         }
 
-        public TestBuilder defc(final Object v) {
+        public TestBuilder defc(final String v) {
             defaults(TestKey.C, v);
             return this;
         }
@@ -423,15 +501,46 @@ public class MutableMapBuilderTest {
             return this;
         }
 
-        public TestBuilder val(final Map<TestKey, Object> vs) {
+        public TestBuilder upd(
+                final Map<TestKey, Function<? super String, ? extends String>> ms) {
+            updates(ms);
+            return this;
+        }
+
+        public TestBuilder upd(final TestKey k,
+                final Function<? super String, ? extends String> m) {
+            updates(k, m);
+            return this;
+        }
+
+        public TestBuilder upda(
+                final Function<? super String, ? extends String> m) {
+            updates(TestKey.A, m);
+            return this;
+        }
+
+        public TestBuilder updb(
+                final Function<? super String, ? extends String> m) {
+            updates(TestKey.B, m);
+            return this;
+        }
+
+        public TestBuilder updc(
+                final Function<? super String, ? extends String> m) {
+            updates(TestKey.C, m);
+            return this;
+        }
+
+        public TestBuilder val(final Map<TestKey, String> vs) {
             values(vs);
             return this;
         }
 
-        public TestBuilder val(final TestKey k, final Object v) {
+        public TestBuilder val(final TestKey k, final String v) {
             values(k, v);
             return this;
         }
+
     }
 
     enum TestKey {

@@ -87,7 +87,6 @@ final class HashMapKernel<K, V> implements MapKernel<K, V> {
             final Map<K, Function<? super V, ? extends V>> additional) {
 
         additional.forEach(this::addEntry);
-        this.seen.addAll(additional.keySet());
 
     }
 
