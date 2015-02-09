@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.function.Function;
 
 final class HashMapKernel<K, V> implements MapKernel<K, V> {
 
@@ -34,7 +35,7 @@ final class HashMapKernel<K, V> implements MapKernel<K, V> {
      * Entry accumulator. Map entries are removed or added by the
      * {@link #values(Map)} and {@link #remove(Collection)} operations.
      */
-    private final HashMap<K, V> entries = new HashMap<>();
+    private final HashMap<K, Function<? super V, ? extends V>> entries = new HashMap<>();
 
     /**
      * All seen keys, i.e. all keys for which default has been overridden. A
@@ -66,7 +67,9 @@ final class HashMapKernel<K, V> implements MapKernel<K, V> {
         /*
          * apply accumulated entries.
          */
-        rval.putAll(this.entries);
+        this.entries.forEach((k, fv) -> {
+            rval.compute(k, (rk, rv) -> fv.apply(rv));
+        });
 
         return rval;
     }
@@ -80,10 +83,28 @@ final class HashMapKernel<K, V> implements MapKernel<K, V> {
     }
 
     @Override
+    public void updates(
+            final Map<K, Function<? super V, ? extends V>> additional) {
+
+        additional.forEach(this::addEntry);
+        this.seen.addAll(additional.keySet());
+
+    }
+
+    @Override
     public void values(final Map<K, V> additional) {
 
-        this.entries.putAll(additional);
+        additional.forEach((k, v) -> {
+            addEntry(k, any -> v);
+        });
         this.seen.addAll(additional.keySet());
+
+    }
+
+    private void addEntry(final K k,
+            final Function<? super V, ? extends V> mutate) {
+
+        this.entries.merge(k, mutate, Function::andThen);
 
     }
 
