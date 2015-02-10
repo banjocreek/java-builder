@@ -70,6 +70,24 @@ public abstract class AbstractImmutableMapBuilder<K, V, R, P> extends
     }
 
     /**
+     * Return a delta that will clear all builder state.
+     *
+     * @return clear delta
+     */
+    protected final MapDelta<K, V> genClear() {
+        return Clear.instance();
+    }
+
+    /**
+     * Return a delta that will clear all builder state except for defaults.
+     *
+     * @return reset delta
+     */
+    protected final MapDelta<K, V> genReset() {
+        return Reset.instance();
+    }
+
+    /**
      * Create a delta consisting of items to remove.
      *
      * @param toRemove

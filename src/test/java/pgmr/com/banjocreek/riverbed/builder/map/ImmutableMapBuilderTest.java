@@ -41,6 +41,26 @@ public class ImmutableMapBuilderTest {
     }
 
     @Test
+    public void testClear() {
+
+        /*
+         * Given a builder with defaults and values
+         */
+        final TestBuilder b = this.empty.defa("DA").defb("DB").b("VB").c("VC");
+
+        /*
+         * when the builder is cleared
+         */
+        final TestBuilder b1 = b.clear();
+
+        /*
+         * it produces an empty map
+         */
+        assertTrue(b1.done().isEmpty());
+
+    }
+
+    @Test
     public void testConstructParent() {
 
         /*
@@ -354,6 +374,31 @@ public class ImmutableMapBuilderTest {
     }
 
     @Test
+    public void testReset() {
+
+        /*
+         * Given a builder with defaults, values, and removed overlapping
+         * defaults.
+         */
+        final TestBuilder b = this.empty.defa("DA").defb("DB").b("VB").c("VC")
+                .noa();
+
+        /*
+         * when the builder is reset
+         */
+        final TestBuilder b1 = b.reset();
+
+        /*
+         * it produces a map with precisely the defaults
+         */
+        final Object actual = b1.done();
+        final Object expected = this.empty.a("DA").b("DB").done();
+
+        assertEquals(expected, actual);
+
+    }
+
+    @Test
     public void testUpdateDefault() {
 
         /*
@@ -485,6 +530,11 @@ public class ImmutableMapBuilderTest {
             return new TestBuilder(this, values(TestKey.C, v));
         }
 
+        public TestBuilder clear() {
+            return new TestBuilder(this, genClear());
+
+        }
+
         public TestBuilder def(final Map<TestKey, String> vs) {
             return new TestBuilder(this, defaults(vs));
         }
@@ -523,6 +573,10 @@ public class ImmutableMapBuilderTest {
 
         public TestBuilder noc() {
             return new TestBuilder(this, remove(TestKey.C));
+        }
+
+        public TestBuilder reset() {
+            return new TestBuilder(this, genReset());
         }
 
         public TestBuilder upd(

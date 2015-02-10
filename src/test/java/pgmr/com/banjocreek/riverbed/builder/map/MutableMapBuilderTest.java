@@ -40,6 +40,26 @@ public class MutableMapBuilderTest {
     }
 
     @Test
+    public void testClear() {
+
+        /*
+         * Given a builder with defaults and values
+         */
+        final TestBuilder b = this.empty.defa("DA").defb("DB").b("VB").c("VC");
+
+        /*
+         * when the builder is cleared
+         */
+        b.clear();
+
+        /*
+         * it produces an empty map
+         */
+        assertTrue(b.merge().isEmpty());
+
+    }
+
+    @Test
     public void testConstructParent() {
 
         /*
@@ -329,6 +349,31 @@ public class MutableMapBuilderTest {
     }
 
     @Test
+    public void testReset() {
+
+        /*
+         * Given a builder with defaults, values, and removed overlapping
+         * defaults.
+         */
+        final TestBuilder b = this.empty.defa("DA").defb("DB").b("VB").c("VC")
+                .noa();
+
+        /*
+         * when the builder is reset
+         */
+        b.reset();
+
+        /*
+         * it produces a map with precisely the defaults
+         */
+        final Object actual = b.merge();
+        final Object expected = new TestBuilder().a("DA").b("DB").merge();
+
+        assertEquals(expected, actual);
+
+    }
+
+    @Test
     public void testUpdateDefault() {
 
         /*
@@ -451,6 +496,12 @@ public class MutableMapBuilderTest {
             return this;
         }
 
+        public TestBuilder clear() {
+            doClear();
+            return this;
+
+        }
+
         public TestBuilder def(final Map<TestKey, String> vs) {
             defaults(vs);
             return this;
@@ -498,6 +549,11 @@ public class MutableMapBuilderTest {
 
         public TestBuilder noc() {
             remove(TestKey.C);
+            return this;
+        }
+
+        public TestBuilder reset() {
+            doReset();
             return this;
         }
 
