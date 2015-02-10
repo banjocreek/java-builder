@@ -110,11 +110,36 @@ public class MutableListBuilderTest {
 
     }
 
+    @Test
+    public void testClear() {
+
+        /*
+         * given a builder with values
+         */
+        this.builder.add("one").add("two");
+
+        /*
+         * when clear is invoked
+         */
+        this.builder.clear();
+
+        /*
+         * the builder will produce an empty instance
+         */
+        assertTrue(this.builder.merge().isEmpty());
+
+    }
+
     private static final class TestBuilder extends
             AbstractMutableListBuilder<String, List<String>> {
 
         protected TestBuilder() {
             super(Function.identity());
+        }
+
+        public TestBuilder clear() {
+            doClear();
+            return this;
         }
 
         TestBuilder add(final String e) {

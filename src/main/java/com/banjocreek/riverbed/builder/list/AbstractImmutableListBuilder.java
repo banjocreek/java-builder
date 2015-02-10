@@ -49,4 +49,9 @@ public class AbstractImmutableListBuilder<E, R, P> extends
             final Collection<? extends E> elems) {
         return Op.addAll(elems);
     }
+
+    protected final UnaryOperator<List<E>> genClear() {
+        return Op.clear();
+    }
+
 }
