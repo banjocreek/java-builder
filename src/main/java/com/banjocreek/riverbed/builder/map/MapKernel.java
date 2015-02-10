@@ -68,9 +68,16 @@ interface MapKernel<K, V> {
     public void remove(final Collection<K> toRemove);
 
     /**
+     * Clear specified state except for defaults.
+     *
+     * @param toReset
+     */
+    public void reset(Collection<K> toReset);
+
+    /**
      * Clear all state except for defaults.
      */
-    public void reset();
+    public void resetAll();
 
     /**
      * <p>

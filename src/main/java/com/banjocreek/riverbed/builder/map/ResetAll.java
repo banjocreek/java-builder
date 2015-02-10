@@ -17,29 +17,18 @@
  */
 package com.banjocreek.riverbed.builder.map;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+final class ResetAll<K, V> implements MapDelta<K, V> {
 
-final class Reset<K, V> implements MapDelta<K, V> {
+    private static final ResetAll<?, ?> INSTANCE = new ResetAll<>();
 
-    private final Set<K> keys;
-
-    public Reset(final Collection<? extends K> keys) {
-        final Set<K> temp = new HashSet<>(keys);
-        Helper.requireKeys(temp);
-        this.keys = temp;
-    }
-
-    public Reset(final K key) {
-        this.keys = Collections.singleton(Objects.requireNonNull(key));
+    @SuppressWarnings("unchecked")
+    static <KK, VV> ResetAll<KK, VV> instance() {
+        return (ResetAll<KK, VV>) INSTANCE;
     }
 
     @Override
     public void applyTo(final MapKernel<K, V> kernel) {
-        kernel.reset(this.keys);
+        kernel.resetAll();
     }
 
 }

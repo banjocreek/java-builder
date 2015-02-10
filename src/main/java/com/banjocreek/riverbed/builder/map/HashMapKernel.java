@@ -89,7 +89,13 @@ final class HashMapKernel<K, V> implements MapKernel<K, V> {
     }
 
     @Override
-    public void reset() {
+    public void reset(final Collection<K> toReset) {
+        this.entries.keySet().removeAll(toReset);
+        this.removed.removeAll(toReset);
+    }
+
+    @Override
+    public void resetAll() {
         this.entries.clear();
         this.removed.clear();
     }
