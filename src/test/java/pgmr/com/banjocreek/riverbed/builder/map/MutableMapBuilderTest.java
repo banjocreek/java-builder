@@ -374,6 +374,58 @@ public class MutableMapBuilderTest {
     }
 
     @Test
+    public void testResetMultipleKeys() {
+
+        /*
+         * Given a builder with defaults, values, and removed overlapping
+         * defaults.
+         */
+        final TestBuilder b = this.empty.defa("DA").defb("DB").b("VB").c("VC")
+                .noa();
+
+        /*
+         * when multiple keys are reset
+         */
+        b.reset(Arrays.asList(TestKey.A, TestKey.C));
+
+        /*
+         * it produces a map with the reset keys set to their defaults but all
+         * others left as specified.
+         */
+        final Object actual = b.merge();
+        final Object expected = new TestBuilder().a("DA").b("VB").merge();
+
+        assertEquals(expected, actual);
+
+    }
+
+    @Test
+    public void testResetSingleKey() {
+
+        /*
+         * Given a builder with defaults, values, and removed overlapping
+         * defaults.
+         */
+        final TestBuilder b = this.empty.defa("DA").defb("DB").b("VB").c("VC")
+                .noa().nob();
+
+        /*
+         * when a single key is reset
+         */
+        b.reseta();
+
+        /*
+         * it produces a map with the reset key set to its default but all
+         * others left as specified.
+         */
+        final Object actual = b.merge();
+        final Object expected = new TestBuilder().a("DA").c("VC").merge();
+
+        assertEquals(expected, actual);
+
+    }
+
+    @Test
     public void testUpdateDefault() {
 
         /*
@@ -554,6 +606,26 @@ public class MutableMapBuilderTest {
 
         public TestBuilder reset() {
             doReset();
+            return this;
+        }
+
+        public TestBuilder reset(final Collection<TestKey> keys) {
+            doReset(keys);
+            return this;
+        }
+
+        public TestBuilder reseta() {
+            doReset(TestKey.A);
+            return this;
+        }
+
+        public TestBuilder resetb() {
+            doReset(TestKey.B);
+            return this;
+        }
+
+        public TestBuilder resetc() {
+            doReset(TestKey.C);
             return this;
         }
 

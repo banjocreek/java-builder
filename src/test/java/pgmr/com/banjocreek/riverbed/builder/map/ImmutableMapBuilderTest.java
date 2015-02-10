@@ -399,6 +399,58 @@ public class ImmutableMapBuilderTest {
     }
 
     @Test
+    public void testResetMultipleKeys() {
+
+        /*
+         * Given a builder with defaults, values, and removed overlapping
+         * defaults.
+         */
+        final TestBuilder b = this.empty.defa("DA").defb("DB").b("VB").c("VC")
+                .noa();
+
+        /*
+         * when multiple keys are reset
+         */
+        final TestBuilder b1 = b.reset(Arrays.asList(TestKey.A, TestKey.C));
+
+        /*
+         * it produces a map with the reset keys set to their defaults but all
+         * others left as specified.
+         */
+        final Object actual = b1.done();
+        final Object expected = new TestBuilder().a("DA").b("VB").done();
+
+        assertEquals(expected, actual);
+
+    }
+
+    @Test
+    public void testResetSingleKey() {
+
+        /*
+         * Given a builder with defaults, values, and removed overlapping
+         * defaults.
+         */
+        final TestBuilder b = this.empty.defa("DA").defb("DB").b("VB").c("VC")
+                .noa().nob();
+
+        /*
+         * when a single key is reset
+         */
+        final TestBuilder b1 = b.reseta();
+
+        /*
+         * it produces a map with the reset key set to its default but all
+         * others left as specified.
+         */
+        final Object actual = b1.done();
+        final Object expected = new TestBuilder().a("DA").c("VC").done();
+
+        assertEquals(expected, actual);
+
+    }
+
+    @Test
     public void testUpdateDefault() {
 
         /*
@@ -577,6 +629,22 @@ public class ImmutableMapBuilderTest {
 
         public TestBuilder reset() {
             return new TestBuilder(this, genReset());
+        }
+
+        public TestBuilder reset(final Collection<TestKey> keys) {
+            return new TestBuilder(this, genReset(keys));
+        }
+
+        public TestBuilder reseta() {
+            return new TestBuilder(this, genReset(TestKey.A));
+        }
+
+        public TestBuilder resetb() {
+            return new TestBuilder(this, genReset(TestKey.A));
+        }
+
+        public TestBuilder resetc() {
+            return new TestBuilder(this, genReset(TestKey.A));
         }
 
         public TestBuilder upd(

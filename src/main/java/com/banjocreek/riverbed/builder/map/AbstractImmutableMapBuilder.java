@@ -109,7 +109,32 @@ public abstract class AbstractImmutableMapBuilder<K, V, R, P> extends
      * @return reset delta
      */
     protected final MapDelta<K, V> genReset() {
-        return Reset.instance();
+        return ResetAll.instance();
+    }
+
+    /**
+     * Return a delta that will reset the specified keys.
+     *
+     * @param toReset
+     *            keys to reset.
+     *
+     * @return reset delta
+     */
+    protected final MapDelta<K, V> genReset(
+            final Collection<? extends K> toReset) {
+        return new Reset<>(toReset);
+    }
+
+    /**
+     * Return a delta that will reset the specified key.
+     *
+     * @param toReset
+     *            key to reset.
+     *
+     * @return reset delta
+     */
+    protected final MapDelta<K, V> genReset(final K toReset) {
+        return new Reset<>(toReset);
     }
 
     /**

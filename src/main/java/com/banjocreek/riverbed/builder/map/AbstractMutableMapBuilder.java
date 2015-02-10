@@ -96,7 +96,15 @@ public abstract class AbstractMutableMapBuilder<K, V, P> extends
      * Clear all builder state except for defaults.
      */
     protected final void doReset() {
-        apply(Reset.instance());
+        apply(ResetAll.instance());
+    }
+
+    protected final void doReset(final Collection<? extends K> toReset) {
+        apply(new Reset<>(toReset));
+    }
+
+    protected final void doReset(final K toReset) {
+        apply(new Reset<>(toReset));
     }
 
     /**
