@@ -32,6 +32,13 @@ public abstract class AbstractMutableMapBuilder<K, V, P> extends
     }
 
     /**
+     * Clear all builder state.
+     */
+    protected final void doClear() {
+        apply(Clear.instance());
+    }
+
+    /**
      * Post a delta consisting of defaults to register.
      *
      * @param key
@@ -42,7 +49,7 @@ public abstract class AbstractMutableMapBuilder<K, V, P> extends
      *
      *
      */
-    protected final void defaults(final K key, final V value) {
+    protected final void doDefaults(final K key, final V value) {
         apply(new Defaults<>(key, value));
     }
 
@@ -54,24 +61,10 @@ public abstract class AbstractMutableMapBuilder<K, V, P> extends
      *
      *
      */
-    protected final void defaults(final Map<K, ? extends V> defaults) {
+    protected final void doDefaults(final Map<K, ? extends V> defaults) {
 
         apply(defaults.isEmpty() ? Nop.instance() : new Defaults<>(defaults));
 
-    }
-
-    /**
-     * Clear all builder state.
-     */
-    protected final void doClear() {
-        apply(Clear.instance());
-    }
-
-    /**
-     * Clear all builder state except for defaults.
-     */
-    protected final void doReset() {
-        apply(Reset.instance());
     }
 
     /**
@@ -82,7 +75,7 @@ public abstract class AbstractMutableMapBuilder<K, V, P> extends
      *
      *
      */
-    protected final void remove(final Collection<K> toRemove) {
+    protected final void doRemove(final Collection<K> toRemove) {
         apply(toRemove.isEmpty() ? Nop.instance() : new Remove<>(toRemove));
     }
 
@@ -94,9 +87,16 @@ public abstract class AbstractMutableMapBuilder<K, V, P> extends
      *
      *
      */
-    protected final void remove(final K toRemove) {
+    protected final void doRemove(final K toRemove) {
 
         apply(new Remove<>(toRemove));
+    }
+
+    /**
+     * Clear all builder state except for defaults.
+     */
+    protected final void doReset() {
+        apply(Reset.instance());
     }
 
     /**
@@ -108,7 +108,7 @@ public abstract class AbstractMutableMapBuilder<K, V, P> extends
      * @param mutate
      *            mutation specification.
      */
-    protected final void updates(final K key,
+    protected final void doUpdates(final K key,
             final Function<? super V, ? extends V> mutate) {
         apply(new Update<>(key, mutate));
     }
@@ -119,7 +119,7 @@ public abstract class AbstractMutableMapBuilder<K, V, P> extends
      * @param mutators
      *            mutations to apply
      */
-    protected final void updates(
+    protected final void doUpdates(
             final Map<K, Function<? super V, ? extends V>> mutators) {
         apply(mutators.isEmpty() ? Nop.instance() : new Update<>(mutators));
     }
@@ -135,7 +135,7 @@ public abstract class AbstractMutableMapBuilder<K, V, P> extends
      *
      *
      */
-    protected final void values(final K key, final V value) {
+    protected final void doValues(final K key, final V value) {
 
         apply(new Values<>(key, value));
 
@@ -149,7 +149,7 @@ public abstract class AbstractMutableMapBuilder<K, V, P> extends
      *
      *
      */
-    protected final void values(final Map<K, ? extends V> entries) {
+    protected final void doValues(final Map<K, ? extends V> entries) {
         apply(entries.isEmpty() ? Nop.instance() : new Values<>(entries));
 
     }

@@ -482,17 +482,17 @@ public class MutableMapBuilderTest {
         }
 
         public TestBuilder a(final String v) {
-            values(TestKey.A, v);
+            doValues(TestKey.A, v);
             return this;
         }
 
         public TestBuilder b(final String v) {
-            values(TestKey.B, v);
+            doValues(TestKey.B, v);
             return this;
         }
 
         public TestBuilder c(final String v) {
-            values(TestKey.C, v);
+            doValues(TestKey.C, v);
             return this;
         }
 
@@ -503,52 +503,52 @@ public class MutableMapBuilderTest {
         }
 
         public TestBuilder def(final Map<TestKey, String> vs) {
-            defaults(vs);
+            doDefaults(vs);
             return this;
         }
 
         public TestBuilder def(final TestKey k, final String v) {
-            defaults(k, v);
+            doDefaults(k, v);
             return this;
         }
 
         public TestBuilder defa(final String v) {
-            defaults(TestKey.A, v);
+            doDefaults(TestKey.A, v);
             return this;
         }
 
         public TestBuilder defb(final String v) {
-            defaults(TestKey.B, v);
+            doDefaults(TestKey.B, v);
             return this;
         }
 
         public TestBuilder defc(final String v) {
-            defaults(TestKey.C, v);
+            doDefaults(TestKey.C, v);
             return this;
         }
 
         public TestBuilder no(final Collection<TestKey> ks) {
-            remove(ks);
+            doRemove(ks);
             return this;
         }
 
         public TestBuilder no(final TestKey k) {
-            remove(k);
+            doRemove(k);
             return this;
         }
 
         public TestBuilder noa() {
-            remove(TestKey.A);
+            doRemove(TestKey.A);
             return this;
         }
 
         public TestBuilder nob() {
-            remove(TestKey.B);
+            doRemove(TestKey.B);
             return this;
         }
 
         public TestBuilder noc() {
-            remove(TestKey.C);
+            doRemove(TestKey.C);
             return this;
         }
 
@@ -559,41 +559,41 @@ public class MutableMapBuilderTest {
 
         public TestBuilder upd(
                 final Map<TestKey, Function<? super String, ? extends String>> ms) {
-            updates(ms);
+            doUpdates(ms);
             return this;
         }
 
         public TestBuilder upd(final TestKey k,
                 final Function<? super String, ? extends String> m) {
-            updates(k, m);
+            doUpdates(k, m);
             return this;
         }
 
         public TestBuilder upda(
                 final Function<? super String, ? extends String> m) {
-            updates(TestKey.A, m);
+            doUpdates(TestKey.A, m);
             return this;
         }
 
         public TestBuilder updb(
                 final Function<? super String, ? extends String> m) {
-            updates(TestKey.B, m);
+            doUpdates(TestKey.B, m);
             return this;
         }
 
         public TestBuilder updc(
                 final Function<? super String, ? extends String> m) {
-            updates(TestKey.C, m);
+            doUpdates(TestKey.C, m);
             return this;
         }
 
         public TestBuilder val(final Map<TestKey, String> vs) {
-            values(vs);
+            doValues(vs);
             return this;
         }
 
         public TestBuilder val(final TestKey k, final String v) {
-            values(k, v);
+            doValues(k, v);
             return this;
         }
 
