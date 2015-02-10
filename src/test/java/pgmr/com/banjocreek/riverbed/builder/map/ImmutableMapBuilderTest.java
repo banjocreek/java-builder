@@ -519,15 +519,15 @@ public class ImmutableMapBuilderTest {
         }
 
         public TestBuilder a(final String v) {
-            return new TestBuilder(this, values(TestKey.A, v));
+            return new TestBuilder(this, genValues(TestKey.A, v));
         }
 
         public TestBuilder b(final String v) {
-            return new TestBuilder(this, values(TestKey.B, v));
+            return new TestBuilder(this, genValues(TestKey.B, v));
         }
 
         public TestBuilder c(final String v) {
-            return new TestBuilder(this, values(TestKey.C, v));
+            return new TestBuilder(this, genValues(TestKey.C, v));
         }
 
         public TestBuilder clear() {
@@ -536,43 +536,43 @@ public class ImmutableMapBuilderTest {
         }
 
         public TestBuilder def(final Map<TestKey, String> vs) {
-            return new TestBuilder(this, defaults(vs));
+            return new TestBuilder(this, genDefaults(vs));
         }
 
         public TestBuilder def(final TestKey k, final String v) {
-            return new TestBuilder(this, defaults(k, v));
+            return new TestBuilder(this, genDefaults(k, v));
         }
 
         public TestBuilder defa(final String v) {
-            return new TestBuilder(this, defaults(TestKey.A, v));
+            return new TestBuilder(this, genDefaults(TestKey.A, v));
         }
 
         public TestBuilder defb(final String v) {
-            return new TestBuilder(this, defaults(TestKey.B, v));
+            return new TestBuilder(this, genDefaults(TestKey.B, v));
         }
 
         public TestBuilder defc(final String v) {
-            return new TestBuilder(this, defaults(TestKey.C, v));
+            return new TestBuilder(this, genDefaults(TestKey.C, v));
         }
 
         public TestBuilder no(final Collection<TestKey> ks) {
-            return new TestBuilder(this, remove(ks));
+            return new TestBuilder(this, genRemove(ks));
         }
 
         public TestBuilder no(final TestKey k) {
-            return new TestBuilder(this, remove(k));
+            return new TestBuilder(this, genRemove(k));
         }
 
         public TestBuilder noa() {
-            return new TestBuilder(this, remove(TestKey.A));
+            return new TestBuilder(this, genRemove(TestKey.A));
         }
 
         public TestBuilder nob() {
-            return new TestBuilder(this, remove(TestKey.B));
+            return new TestBuilder(this, genRemove(TestKey.B));
         }
 
         public TestBuilder noc() {
-            return new TestBuilder(this, remove(TestKey.C));
+            return new TestBuilder(this, genRemove(TestKey.C));
         }
 
         public TestBuilder reset() {
@@ -581,35 +581,35 @@ public class ImmutableMapBuilderTest {
 
         public TestBuilder upd(
                 final Map<TestKey, Function<? super String, ? extends String>> ms) {
-            return new TestBuilder(this, updates(ms));
+            return new TestBuilder(this, genUpdates(ms));
         }
 
         public TestBuilder upd(final TestKey k,
                 final Function<? super String, ? extends String> m) {
-            return new TestBuilder(this, updates(k, m));
+            return new TestBuilder(this, genUpdates(k, m));
         }
 
         public TestBuilder upda(
                 final Function<? super String, ? extends String> m) {
-            return new TestBuilder(this, updates(TestKey.A, m));
+            return new TestBuilder(this, genUpdates(TestKey.A, m));
         }
 
         public TestBuilder updb(
                 final Function<? super String, ? extends String> m) {
-            return new TestBuilder(this, updates(TestKey.B, m));
+            return new TestBuilder(this, genUpdates(TestKey.B, m));
         }
 
         public TestBuilder updc(
                 final Function<? super String, ? extends String> m) {
-            return new TestBuilder(this, updates(TestKey.C, m));
+            return new TestBuilder(this, genUpdates(TestKey.C, m));
         }
 
         public TestBuilder val(final Map<TestKey, String> vs) {
-            return new TestBuilder(this, values(vs));
+            return new TestBuilder(this, genValues(vs));
         }
 
         public TestBuilder val(final TestKey k, final String v) {
-            return new TestBuilder(this, values(k, v));
+            return new TestBuilder(this, genValues(k, v));
         }
 
     }

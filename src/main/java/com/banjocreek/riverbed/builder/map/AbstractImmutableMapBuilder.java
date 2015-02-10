@@ -41,6 +41,15 @@ public abstract class AbstractImmutableMapBuilder<K, V, R, P> extends
     }
 
     /**
+     * Return a delta that will clear all builder state.
+     *
+     * @return clear delta
+     */
+    protected final MapDelta<K, V> genClear() {
+        return Clear.instance();
+    }
+
+    /**
      * Create a delta consisting of defaults to register.
      *
      * @param key
@@ -51,7 +60,7 @@ public abstract class AbstractImmutableMapBuilder<K, V, R, P> extends
      *
      * @return delta
      */
-    protected final MapDelta<K, V> defaults(final K key, final V value) {
+    protected final MapDelta<K, V> genDefaults(final K key, final V value) {
         return new Defaults<>(key, value);
     }
 
@@ -63,19 +72,35 @@ public abstract class AbstractImmutableMapBuilder<K, V, R, P> extends
      *
      * @return delta
      */
-    protected final MapDelta<K, V> defaults(final Map<K, ? extends V> defaults) {
+    protected final MapDelta<K, V> genDefaults(
+            final Map<K, ? extends V> defaults) {
 
         return defaults.isEmpty() ? Nop.instance() : new Defaults<>(defaults);
 
     }
 
     /**
-     * Return a delta that will clear all builder state.
+     * Create a delta consisting of items to remove.
      *
-     * @return clear delta
+     * @param toRemove
+     *            collection of items to remove.
+     *
+     * @return delta
      */
-    protected final MapDelta<K, V> genClear() {
-        return Clear.instance();
+    protected final MapDelta<K, V> genRemove(final Collection<K> toRemove) {
+        return toRemove.isEmpty() ? Nop.instance() : new Remove<>(toRemove);
+    }
+
+    /**
+     * Create a delta consisting of items to remove.
+     *
+     * @param toRemove
+     *            item to remove
+     *
+     * @return delta
+     */
+    protected final MapDelta<K, V> genRemove(final K toRemove) {
+        return new Remove<>(toRemove);
     }
 
     /**
@@ -88,30 +113,6 @@ public abstract class AbstractImmutableMapBuilder<K, V, R, P> extends
     }
 
     /**
-     * Create a delta consisting of items to remove.
-     *
-     * @param toRemove
-     *            collection of items to remove.
-     *
-     * @return delta
-     */
-    protected final MapDelta<K, V> remove(final Collection<K> toRemove) {
-        return toRemove.isEmpty() ? Nop.instance() : new Remove<>(toRemove);
-    }
-
-    /**
-     * Create a delta consisting of items to remove.
-     *
-     * @param toRemove
-     *            item to remove
-     *
-     * @return delta
-     */
-    protected final MapDelta<K, V> remove(final K toRemove) {
-        return new Remove<>(toRemove);
-    }
-
-    /**
      * Create a delta consisting of a single update.
      *
      * @param key
@@ -120,7 +121,7 @@ public abstract class AbstractImmutableMapBuilder<K, V, R, P> extends
      * @param mutate
      *            mutation specification.
      */
-    protected final MapDelta<K, V> updates(final K key,
+    protected final MapDelta<K, V> genUpdates(final K key,
             final Function<? super V, ? extends V> mutate) {
         return new Update<>(key, mutate);
     }
@@ -131,7 +132,7 @@ public abstract class AbstractImmutableMapBuilder<K, V, R, P> extends
      * @param mutators
      *            mutations to apply
      */
-    protected final MapDelta<K, V> updates(
+    protected final MapDelta<K, V> genUpdates(
             final Map<K, Function<? super V, ? extends V>> mutators) {
         return mutators.isEmpty() ? Nop.instance() : new Update<>(mutators);
     }
@@ -147,7 +148,7 @@ public abstract class AbstractImmutableMapBuilder<K, V, R, P> extends
      *
      * @return delta
      */
-    protected final MapDelta<K, V> values(final K key, final V value) {
+    protected final MapDelta<K, V> genValues(final K key, final V value) {
 
         return new Values<>(key, value);
 
@@ -161,7 +162,7 @@ public abstract class AbstractImmutableMapBuilder<K, V, R, P> extends
      *
      * @return delta
      */
-    protected final MapDelta<K, V> values(final Map<K, ? extends V> entries) {
+    protected final MapDelta<K, V> genValues(final Map<K, ? extends V> entries) {
         return entries.isEmpty() ? Nop.instance() : new Values<>(entries);
 
     }
