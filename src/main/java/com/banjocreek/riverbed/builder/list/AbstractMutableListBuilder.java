@@ -40,4 +40,8 @@ public class AbstractMutableListBuilder<E, P> extends
         apply(Op.addAll(elems));
     }
 
+    protected final void doClear() {
+        apply(Op.clear());
+    }
+
 }

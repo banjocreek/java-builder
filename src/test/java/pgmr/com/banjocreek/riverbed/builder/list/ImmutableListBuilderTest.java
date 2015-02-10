@@ -111,6 +111,26 @@ public class ImmutableListBuilderTest {
 
     }
 
+    @Test
+    public void testClear() {
+
+        /*
+         * given a builder with values
+         */
+        final TestBuilder b = this.builder.add("one").add("two");
+
+        /*
+         * when clear is invoked
+         */
+        final TestBuilder b1 = b.clear();
+
+        /*
+         * the builder will produce an empty instance
+         */
+        assertTrue(b1.done().isEmpty());
+
+    }
+
     private static final class TestBuilder extends
             AbstractImmutableListBuilder<String, List<String>, List<String>> {
 
@@ -121,6 +141,10 @@ public class ImmutableListBuilderTest {
         private TestBuilder(final TestBuilder b,
                 final UnaryOperator<List<String>> delta) {
             super(b, delta);
+        }
+
+        public TestBuilder clear() {
+            return new TestBuilder(this, genClear());
         }
 
         TestBuilder add(final String e) {
