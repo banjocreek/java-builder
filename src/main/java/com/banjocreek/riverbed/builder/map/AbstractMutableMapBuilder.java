@@ -61,6 +61,20 @@ public abstract class AbstractMutableMapBuilder<K, V, P> extends
     }
 
     /**
+     * Clear all builder state.
+     */
+    protected final void doClear() {
+        apply(Clear.instance());
+    }
+
+    /**
+     * Clear all builder state except for defaults.
+     */
+    protected final void doReset() {
+        apply(Reset.instance());
+    }
+
+    /**
      * Post a delta consisting of items to remove.
      *
      * @param toRemove

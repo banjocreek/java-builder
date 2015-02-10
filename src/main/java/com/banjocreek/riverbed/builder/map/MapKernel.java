@@ -24,6 +24,11 @@ import java.util.function.Function;
 interface MapKernel<K, V> {
 
     /**
+     * Clear all state including defaults.
+     */
+    public void clear();
+
+    /**
      * <p>
      * Set or update defaults. Any entries provided here will occur in the
      * resulting map as long as they are not overridden or removed.
@@ -61,6 +66,11 @@ interface MapKernel<K, V> {
      *            keys of entries to remove.
      */
     public void remove(final Collection<K> toRemove);
+
+    /**
+     * Clear all state except for defaults.
+     */
+    public void reset();
 
     /**
      * <p>

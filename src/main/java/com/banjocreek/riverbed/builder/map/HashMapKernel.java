@@ -44,6 +44,13 @@ final class HashMapKernel<K, V> implements MapKernel<K, V> {
     private final HashSet<K> removed = new HashSet<>();
 
     @Override
+    public void clear() {
+        this.entries.clear();
+        this.removed.clear();
+        this.defaults.clear();
+    }
+
+    @Override
     public void defaults(final Map<K, V> additional) {
 
         this.defaults.putAll(additional);
@@ -79,6 +86,12 @@ final class HashMapKernel<K, V> implements MapKernel<K, V> {
         this.entries.keySet().removeAll(toRemove);
         this.removed.addAll(toRemove);
 
+    }
+
+    @Override
+    public void reset() {
+        this.entries.clear();
+        this.removed.clear();
     }
 
     @Override
