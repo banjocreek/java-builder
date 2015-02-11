@@ -74,8 +74,11 @@ final class HashMapKernel<K, V> implements MapKernel<K, V> {
          * apply accumulated entries.
          */
         this.entries.forEach((k, fv) -> {
-            rval.compute(k, (rk, rv) -> fv.apply(rv));
-        });
+            // would like to do this...
+            // rval.compute(k, (rk, rv) -> fv.apply(rv));
+            // ...but cannot because we want to allow null
+                rval.put(k, fv.apply(rval.get(k)));
+            });
 
         return rval;
     }

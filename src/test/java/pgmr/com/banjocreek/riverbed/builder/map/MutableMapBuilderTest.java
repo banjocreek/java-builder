@@ -21,6 +21,7 @@ import static org.junit.Assert.*;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
@@ -283,6 +284,48 @@ public class MutableMapBuilderTest {
         expected.put(TestKey.C, "CC");
 
         assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testNullDefaultEmmitted() {
+
+        /*
+         * given a builder
+         */
+        // SETUP
+
+        /*
+         * when a null value is default
+         */
+        final TestBuilder b = this.empty.defa(null);
+
+        /*
+         * the builder will emit the null value for the key
+         */
+        assertTrue(b.merge().containsKey(TestKey.A));
+        assertEquals(Collections.singletonMap(TestKey.A, null), b.merge());
+
+    }
+
+    @Test
+    public void testNullValueEmmitted() {
+
+        /*
+         * given a builder
+         */
+        // SETUP
+
+        /*
+         * when a null value is set
+         */
+        final TestBuilder b = this.empty.a(null);
+
+        /*
+         * the builder will emit the null value for the key
+         */
+        assertTrue(b.merge().containsKey(TestKey.A));
+        assertEquals(Collections.singletonMap(TestKey.A, null), b.merge());
+
     }
 
     @Test(expected = NullPointerException.class)
