@@ -14,9 +14,12 @@ target/
 .classpath
 .project
 .settings/
+*.iml
 
 # idea intellij
 bin/
+.idea/
+
 
 # macintosh
 .DS_Store
